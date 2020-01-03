@@ -1,0 +1,22 @@
+extends layout.jade
+
+block content
+  .container
+    .card-group
+      .card
+        .card-body
+          h5.card-title Sessions
+          p.card-text Dernière session
+          a.btn.btn-primary(href="/sessions") Voir toutes les sessions
+          a.btn.btn-primary.ml-3(href="/sessions/add")
+            i.fas.fa-plus-circle
+      .card
+        .card-body
+          h5.card-title Joueurs
+          p.card-text Plus assidu
+          a.btn.btn-primary(href="/players") Voir toutes les joueurs
+      .card
+        .card-body
+          h5.card-title Statistiques
+          p.card-text Joueur en tête
+          a.btn.btn-primary(href="#") Voir toutes les statistiques

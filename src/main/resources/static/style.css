@@ -1,0 +1,17 @@
+.table td {
+    vertical-align: middle;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+.all-players-list .list-group-item:first-child {
+    border-top-width: 0;
+    border-radius: 0;
+}
+
+.all-players-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
