@@ -4,6 +4,7 @@ import io.bini.poker.pokerdujeudi.model.Season;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SeasonService {
@@ -15,6 +16,10 @@ public class SeasonService {
 
     public List<Season> list() {
         return seasonRepository.findAll();
+    }
+    
+    public Optional<Season> get(long seasonId) {
+        return seasonRepository.findById(seasonId);
     }
 
     public Season create(Season season) {

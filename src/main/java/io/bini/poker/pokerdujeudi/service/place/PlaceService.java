@@ -4,6 +4,7 @@ import io.bini.poker.pokerdujeudi.model.Place;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaceService {
@@ -15,6 +16,10 @@ public class PlaceService {
 
     public List<Place> list() {
         return placeRepository.findAll();
+    }
+
+    public Optional<Place> get(long placeId) {
+        return placeRepository.findById(placeId);
     }
 
     public Place create(Place place) {

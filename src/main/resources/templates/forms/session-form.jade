@@ -1,4 +1,12 @@
-form(action="/sessions", method="post")
+form(action="/sessions/add", method="post")
+    .form-group
+        .row
+            .col-md-6
+                label Saison
+                select.form-control(name='seasonId')
+                    option Sélectionnez une saison
+                    each season in seasons
+                        option(value='#{season.seasonId}') #{season.name}
     .form-group
         .row
             .col-md-6
@@ -19,16 +27,16 @@ form(action="/sessions", method="post")
                 div.list-group
                     div.list-group-item.list-group-item-success Joueurs sélectionnés
                     button.list-group-item.list-group-item-action.font-weight-bold(type='button', v-for='player in selectedPlayers', :key='player.playerId', v-on:click='unselectPlayer(player)') {{player.firstName}}
-                        input(type='hidden', name='players', v-bind:value='player.playerId')
+                        input(type='hidden', name='playerIds', v-bind:value='player.playerId')
                     div.list-group-item.font-weight-lighter.font-italic(v-if='selectedPlayers.length === 0') Aucun joueur
     .form-group
         .row
             .col-md-6
                 label Lieu
-                select.form-control
+                select.form-control(name='placeId')
+                    option Sélectionnez un lieu
                     each place in places
-                        option Sélectionnez un lieu
-                        option(value='place.placeId') #{place.name}
+                        option(value='#{place.placeId}') #{place.name}
 
 
     button.btn.btn-secondary(type='submit') Enregistrer

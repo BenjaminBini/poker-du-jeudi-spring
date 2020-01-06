@@ -1,0 +1,58 @@
+extends layout.jade
+
+block content
+    .container#session-detail
+        .row
+            .col
+                h2.mb-5 Session du #{session.displayDate()}
+                .row
+                    .col-md-6
+                        players-results-panel(v-bind:session-id="#{session.sessionId}")
+                    .col-md-6
+                        .card
+                            h4.card-header Informations
+                            .card-body
+                                ul
+                                    li Lieu : #{session.place.name != null ? session.place.name : '?'}
+
+
+    script(type='text/x-template', id='players-results-panel')
+        .card(v-if='session.date')
+            h4.card-header {{session.playerResults.length}} joueurs présents
+                button.btn.btn-outline-secondary.btn-sm.float-right Ajouter un joueur
+            .card-body
+                table.table.table-striped
+                    thead.thead-dark
+                        tr
+                            th(scope='col') Nom
+                            th.text-right(scope='col') Buy-ins
+                            th.text-right(scope='col') Résultat
+                            th
+                    tbody
+                        tr(is='player-result-row',
+                            v-for='playerResult in session.playerResults',
+                            v-bind:player-result='playerResult',
+                            v-bind:session-id='#{session.sessionId}'
+                            v-on:delete-player-result='deletePlayerResult')
+                        tr(v-if='session.playerResults.length === 0')
+                            td(colspan=4)
+                                i Aucune donnée
+
+    script(type='text/x-template', id='player-result-row')
+        tr
+            td {{playerResult.player.firstName}} {{playerResult.player.lastName}}
+            td.text-right
+                .btn.btn-outline-secondary.btn-sm.remove-buy-in(v-on:click="decrementBuyIns()")
+                .btn.btn-outline-secondary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
+                .buy-ins {{playerResult.buyIns}}
+            td.text-right
+                .btn.btn-outline-secondary.edit-result(v-on:click="showInput = !showInput", v-if='!showInput')
+                    i.far.fa-edit
+                .btn.btn-outline-secondary.edit-result(v-on:click="save()", v-if='showInput')
+                    i.fas.fa-check
+                .player-result(v-if='showInput')
+                    input.form-control(type='number', v-model="playerResult.result")
+                .player-result(v-if='!showInput') {{playerResult.result}} €
+            td
+                a.btn.btn-outline-secondary.btn-sm.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
+                    i.far.fa-trash-alt

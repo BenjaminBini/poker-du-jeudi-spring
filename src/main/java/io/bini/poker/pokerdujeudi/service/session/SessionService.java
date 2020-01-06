@@ -4,6 +4,7 @@ import io.bini.poker.pokerdujeudi.model.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -17,11 +18,16 @@ public class SessionService {
         return sessionRepository.findAll();
     }
 
-    public Session create(Session session) {
+    public Optional<Session> get(long sessionId) {
+        return sessionRepository.findById(sessionId);
+    }
+
+    public Session save(Session session) {
         return sessionRepository.save(session);
     }
 
     public void delete(Long id) {
         sessionRepository.deleteById(id);
     }
+
 }

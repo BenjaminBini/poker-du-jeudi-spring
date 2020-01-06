@@ -4,6 +4,7 @@ import io.bini.poker.pokerdujeudi.model.Player;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -15,6 +16,10 @@ public class PlayerService {
 
     public List<Player> list() {
         return playerRepository.findAll();
+    }
+
+    public Optional<Player> get(long playerId) {
+        return playerRepository.findById(playerId);
     }
 
     public Player create(Player player) {
