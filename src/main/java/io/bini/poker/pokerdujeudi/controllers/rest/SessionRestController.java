@@ -46,7 +46,7 @@ public class SessionRestController {
 
     @DeleteMapping("{sessionId}/player/{playerId}")
     public Session deletePlayerResult(@PathVariable long sessionId, @PathVariable long playerId) {
-        this.playerResultService.deletePlayerResult(playerId, sessionId);
-        return this.sessionService.get(sessionId).get();
+        return this.playerResultService.deletePlayerResult(playerId, sessionId);
+        //return this.sessionService.get(sessionId).get();
     }
 }

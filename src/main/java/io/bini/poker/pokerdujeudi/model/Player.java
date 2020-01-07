@@ -13,7 +13,7 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long playerId;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade= CascadeType.ALL, mappedBy = "player")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "player")
     @JsonIgnoreProperties(value = {"player", "playerResultKey"})
     private List<PlayerResult> playerResults;
 

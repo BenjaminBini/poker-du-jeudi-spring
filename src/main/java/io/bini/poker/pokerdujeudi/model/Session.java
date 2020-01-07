@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity(name="session")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,7 @@ public class Session {
     @JoinColumn(name="placeId")
     private Place place;
 
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL, mappedBy = "session")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "session")
     @JsonIgnoreProperties(value = {"session", "playerResultKey"})
     private List<PlayerResult> playerResults;
 

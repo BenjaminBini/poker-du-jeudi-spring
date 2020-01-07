@@ -1,6 +1,8 @@
 package io.bini.poker.pokerdujeudi.service.result;
 
+import io.bini.poker.pokerdujeudi.model.Player;
 import io.bini.poker.pokerdujeudi.model.PlayerResult;
+import io.bini.poker.pokerdujeudi.model.PlayerResultKey;
 import io.bini.poker.pokerdujeudi.model.Session;
 import io.bini.poker.pokerdujeudi.service.session.SessionRepository;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,8 @@ public class PlayerResultService {
     }
 
     public Session deletePlayerResult(long playerId, long sessionId) {
+        this.playerResultRepository.deleteById(new PlayerResultKey(playerId, sessionId));
         Session session = this.sessionRepository.getOne(sessionId);
-        List<PlayerResult> playerResults = session.getPlayerResults();
-        playerResults.removeIf(p -> p.getPlayer().getPlayerId() == playerId);
-        this.sessionRepository.save(session);
         return session;
     }
 }
