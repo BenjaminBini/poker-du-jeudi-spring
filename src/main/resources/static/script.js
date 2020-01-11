@@ -85,7 +85,9 @@ Vue.component('players-results-panel', {
     },
     data: function() {
         return {
-            session: {}
+            session: {},
+            otherPlayers: [],
+            playerSearch: ''
         }
     },
     mounted() {
@@ -93,16 +95,55 @@ Vue.component('players-results-panel', {
             .get('/api/sessions/' + this.sessionId)
             .then(response => {
                 this.session = response.data;
+                axios
+                    .get('/api/players')
+                    .then(response => {
+                        this.otherPlayers = response.data;
+                        this.otherPlayers = this.otherPlayers.filter(player =>
+                            this.session.playerResults.filter(playerResult => playerResult.player.playerId == player.playerId).length === 0
+                        );
+                    })
             })
     },
     methods: {
         deletePlayerResult: function(playerId) {
-
+            let playerToBeDeleted = this.session.playerResults.filter(p => p.player.playerId === playerId)[0].player;
             axios
                 .delete('/api/sessions/' + this.sessionId + '/player/' + playerId)
                 .then(response => {
                     this.session = response.data;
+                    this.otherPlayers = [...this.otherPlayers, playerToBeDeleted];
                 })
+        },
+        addPlayer: function(playerId) {
+          axios
+              .post('/api/sessions/' + this.sessionId + '/player/' + playerId, {
+                  result: 0,
+                  buyIns: 0
+              })
+              .then(response => {
+                  this.session = response.data;
+                  this.hideModal();
+                  this.otherPlayers = this.otherPlayers.filter(p => p.playerId !== playerId);
+              });
+        },
+        showModal: function() {
+            $('#add-player').modal('show');
+        },
+        hideModal: function() {
+            $('#add-player').modal('hide');
+        }
+    },
+    computed: {
+        filteredPlayers() {
+            return this.otherPlayers.filter(player =>  {
+                return (player.firstName.toLowerCase().indexOf(this.playerSearch.toLowerCase()) >= 0)
+                    || (player.lastName.toLowerCase().indexOf(this.playerSearch.toLowerCase()) >= 0)
+            }).sort((a, b) => {
+                if(a.playerId < b.playerId) { return -1; }
+                if(a.playerId > b.playerId) { return 1; }
+                return 0;
+            });
         }
     }
 });

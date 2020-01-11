@@ -2,6 +2,7 @@ package io.bini.poker.pokerdujeudi.controllers;
 
 import io.bini.poker.pokerdujeudi.model.Player;
 import io.bini.poker.pokerdujeudi.service.player.PlayerService;
+import io.bini.poker.pokerdujeudi.service.result.PlayerResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +14,12 @@ import java.util.List;
 @RequestMapping("/players")
 public class PlayerController {
     private final PlayerService playerService;
+    private final PlayerResultService playerResultService;
 
     @Autowired
-    public PlayerController(PlayerService playerService) {
+    public PlayerController(PlayerService playerService, PlayerResultService playerResultService) {
         this.playerService = playerService;
+        this.playerResultService = playerResultService;
     }
 
     @GetMapping("")
@@ -34,6 +37,8 @@ public class PlayerController {
 
     @GetMapping("delete/{playerId}")
     public String deletePlayer(@PathVariable Long playerId) {
+        Player player = this.playerService.get(playerId).get();
+        player.getPlayerResults().forEach(r -> this.playerResultService.delete(r));
         this.playerService.delete(playerId);
         return "redirect:/players";
     }

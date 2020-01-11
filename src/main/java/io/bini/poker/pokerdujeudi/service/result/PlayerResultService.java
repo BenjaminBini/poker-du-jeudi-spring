@@ -19,9 +19,23 @@ public class PlayerResultService {
         this.sessionRepository = sessionRepository;
     }
 
-    public Session deletePlayerResult(long playerId, long sessionId) {
+    public List<PlayerResult> getBySession(Session session) {
+        return this.playerResultRepository.findBySession(session);
+    }
+
+    public List<PlayerResult> getByPlayer(Player player) {
+        return this.playerResultRepository.findByPlayer(player);
+    }
+
+    public void delete(long playerId, long sessionId) {
         this.playerResultRepository.deleteById(new PlayerResultKey(playerId, sessionId));
-        Session session = this.sessionRepository.getOne(sessionId);
-        return session;
+    }
+
+    public void delete(PlayerResult playerResult) {
+        this.playerResultRepository.delete(playerResult);
+    }
+
+    public void save(PlayerResult playerResult) {
+        this.playerResultRepository.save(playerResult);
     }
 }

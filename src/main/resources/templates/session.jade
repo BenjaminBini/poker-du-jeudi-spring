@@ -19,7 +19,7 @@ block content
     script(type='text/x-template', id='players-results-panel')
         .card(v-if='session.date')
             h4.card-header {{session.playerResults.length}} joueurs présents
-                button.btn.btn-outline-secondary.btn-sm.float-right Ajouter un joueur
+                button.btn.btn-outline-secondary.btn-sm.float-right(@click='showModal()') Ajouter un joueur
             .card-body
                 table.table.table-striped
                     thead.thead-dark
@@ -37,6 +37,24 @@ block content
                         tr(v-if='session.playerResults.length === 0')
                             td(colspan=4)
                                 i Aucune donnée
+            #add-player.modal.fade(tabindex='-1' role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Ajouter un joueur
+                            button.close(type='button' data-dismiss='modal' aria-label='Close')
+                                span(aria-hidden='true') &times;
+                        .modal-body
+                            div.list-group
+                                div.list-group-item.list-group-item-secondary
+                                    label(for='player-search') Recherchez un joueur
+                                    input#player-search.form-control.form-control-sm(name='player-search', type='text', placeholder='Tapez-ici le nom du joueur', v-model='playerSearch')
+                                div.all-players-list
+                                    button.list-group-item.list-group-item-action.font-weight-bold(type='button', v-for='player in filteredPlayers', :key='player.playerId', v-on:click='addPlayer(player.playerId)') {{player.firstName}}
+                        .modal-footer
+                            button.btn.btn-secondary(type='button' data-dismiss='modal') Annuler
+
+
 
     script(type='text/x-template', id='player-result-row')
         tr

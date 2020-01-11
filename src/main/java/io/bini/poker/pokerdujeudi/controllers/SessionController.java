@@ -4,6 +4,7 @@ import io.bini.poker.pokerdujeudi.dto.SessionDTO;
 import io.bini.poker.pokerdujeudi.model.*;
 import io.bini.poker.pokerdujeudi.service.place.PlaceService;
 import io.bini.poker.pokerdujeudi.service.player.PlayerService;
+import io.bini.poker.pokerdujeudi.service.result.PlayerResultService;
 import io.bini.poker.pokerdujeudi.service.season.SeasonService;
 import io.bini.poker.pokerdujeudi.service.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,15 @@ public class SessionController {
     private final SessionService sessionService;
     private final PlayerService playerService;
     private final PlaceService placeService;
+    private final PlayerResultService playerResultService;
 
     @Autowired
-    public SessionController(SeasonService seasonService, SessionService sessionService, PlayerService playerService, PlaceService placeService) {
+    public SessionController(SeasonService seasonService, SessionService sessionService, PlayerService playerService, PlaceService placeService, PlayerResultService playerResultService) {
         this.seasonService = seasonService;
         this.sessionService = sessionService;
         this.playerService = playerService;
         this.placeService = placeService;
+        this.playerResultService = playerResultService;
     }
 
     @GetMapping("")
@@ -89,6 +92,7 @@ public class SessionController {
             session.setSeason(season.get());
         }
         this.sessionService.save(session);
+        playerResults.stream().forEach(r -> playerResultService.save(r));
         return "redirect:/sessions/" + session.getSessionId();
     }
 
