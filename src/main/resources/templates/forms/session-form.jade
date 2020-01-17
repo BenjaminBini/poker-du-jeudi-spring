@@ -19,7 +19,7 @@ form(action="/sessions/add", method="post")
                 div.list-group
                     div.list-group-item.list-group-item-secondary
                         label(for='player-search') Recherchez un joueur
-                        input#player-search.form-control.form-control-sm(name='player-search', type='text', placeholder='Tapez-ici le nom du joueur', v-model='playerSearch')
+                        input#player-search.form-control.form-control-sm(name='player-search', type='text', placeholder='Tapez-ici le nom du joueur', v-model='playerSearch', ref="searchInput", autocomplete='off')
                     div.all-players-list
                         button.list-group-item.list-group-item-action(type='button', v-for='player in filteredPlayers', :key='player.playerId', v-on:click='selectPlayer(player)') {{player.firstName}}
                         div.list-group-item.font-weight-lighter.font-italic(v-if='filteredPlayers.length === 0') Aucun joueur

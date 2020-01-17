@@ -3,13 +3,14 @@ extends layout.jade
 block content
     .container
         .row
-            ul#pills-tab.nav.nav-pills.mb-3(role='tablist')
-                each season, index in seasons
-                    li.nav-item
-                        if index == 0
-                            a.nav-link.active(id="#pills-#{season.name}-tab", data-toggle='pill' href='#pills-#{season.name}' role='tab' aria-controls='pills-#{season.name}' aria-selected='true') #{season.name}
-                        else
-                            a.nav-link(id="#pills-#{season.name}-tab", data-toggle='pill' href='#pills-#{season.name}' role='tab' aria-controls='pills-#{season.name}' aria-selected='true') #{season.name}
+            .col
+                ul#pills-tab.nav.nav-pills.mb-3(role='tablist')
+                    each season, index in seasons
+                        li.nav-item
+                            if index == 0
+                                a.nav-link.active(id="#pills-#{season.name}-tab", data-toggle='pill' href='#pills-#{season.name}' role='tab' aria-controls='pills-#{season.name}' aria-selected='true') #{season.name}
+                            else
+                                a.nav-link(id="#pills-#{season.name}-tab", data-toggle='pill' href='#pills-#{season.name}' role='tab' aria-controls='pills-#{season.name}' aria-selected='true') #{season.name}
         .row
             .col
                 #pills-tabContent.tab-content
@@ -18,16 +19,19 @@ block content
                             table.table.table-striped
                                 thead.thead-dark
                                     tr
-                                        th(scope='col') #
                                         th(scope='col') Date
+                                        th(scope='col') Vainqueur
+                                        th(scope='col') Perdant
                                         th(scope='col') Lieu
                                         th(scope='col')
                                 tbody
                                     if sessions[season.seasonId] != null
                                         each session in sessions[season.seasonId]
                                             tr
-                                                th(scope='row') #{session.sessionId}
-                                                td #{session.date}
+                                                td
+                                                    a(href='/sessions/#{session.sessionId}') #{session.displayDate()}
+                                                td #{session.bestResult.player.firstName} (#{session.bestResult.result} €)
+                                                td #{session.worstResult.player.firstName} (#{session.worstResult.result} €)
                                                 td #{session.place.name}
                                                 td
                                                     a.btn.btn-secondary.btn-sm.float-right.ml-2(href="/sessions/#{session.sessionId}")
@@ -36,5 +40,8 @@ block content
                                                         i.far.fa-trash-alt
                                     else
                                         tr
-                                            td(colspan=4)
+                                            td(colspan=5)
                                                 i Aucune donnée
+        .row
+            .col
+                a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une session

@@ -44,6 +44,7 @@ public class SessionController {
 
         model.addAttribute("sessions", sessionsBySeason);
         model.addAttribute("seasons", seasons);
+        model.addAttribute("active", "sessions");
         return "sessions";
     }
 
@@ -51,6 +52,7 @@ public class SessionController {
     public String session(Model model, @PathVariable long sessionId) {
         Optional<Session> session = this.sessionService.get(sessionId);
         model.addAttribute("session", session.get());
+        model.addAttribute("active", "sessions");
         return "session";
     }
 
@@ -64,6 +66,7 @@ public class SessionController {
 
         List<Season> seasons = this.seasonService.list();
         model.addAttribute("seasons", seasons);
+        model.addAttribute("active", "sessions");
         return "add-session";
     }
 

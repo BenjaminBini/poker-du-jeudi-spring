@@ -4,6 +4,7 @@ import io.bini.poker.pokerdujeudi.model.Session;
 import io.bini.poker.pokerdujeudi.service.result.PlayerResultService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,9 @@ public class SessionService {
     }
 
     public List<Session> list() {
-        return sessionRepository.findAll();
+        List<Session> sessions = sessionRepository.findAll();
+        sessions.sort(Comparator.comparing(Session::getDate));
+        return sessions;
     }
 
     public Optional<Session> get(long sessionId) {

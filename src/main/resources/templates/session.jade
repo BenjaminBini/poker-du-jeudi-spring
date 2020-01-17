@@ -1,19 +1,25 @@
 extends layout.jade
 
 block content
-    .container#session-detail
+    .container-lg#session-detail
         .row
             .col
-                h2.mb-5 Session du #{session.displayDate()}
+                h2.lg-5.mb-3 Session du #{session.displayDate()}
                 .row
                     .col-md-6
+                        .pivot.pivot-chart.session-pivot.m-auto(data-session-id="#{session.sessionId}")
+                .row
+                    .col-lg-6.mb-4
                         players-results-panel(v-bind:session-id="#{session.sessionId}")
-                    .col-md-6
+                    .col-lg-6
                         .card
                             h4.card-header Informations
                             .card-body
                                 ul
                                     li Lieu : #{session.place.name != null ? session.place.name : '?'}
+                                    li Joueurs : #{session.playerResults.size()}
+                                    li Monnaie : #{session.changeValue} €
+                        a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une autre session
 
 
     script(type='text/x-template', id='players-results-panel')
@@ -64,12 +70,12 @@ block content
                 .btn.btn-outline-secondary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
                 .buy-ins {{playerResult.buyIns}}
             td.text-right
-                .btn.btn-outline-secondary.edit-result(v-on:click="showInput = !showInput", v-if='!showInput')
+                button.btn.btn-outline-secondary.edit-result(v-on:click="toggleInput()", v-if='!showInput')
                     i.far.fa-edit
-                .btn.btn-outline-secondary.edit-result(v-on:click="save()", v-if='showInput')
+                .btn.btn-outline-secondary.edit-result(v-if='showInput', focus)
                     i.fas.fa-check
                 .player-result(v-if='showInput')
-                    input.form-control(type='number', v-model="playerResult.result")
+                    input.form-control(type='number', v-on:blur="save()", v-model="playerResult.result", ref='resultInput')
                 .player-result(v-if='!showInput') {{playerResult.result}} €
             td
                 a.btn.btn-outline-secondary.btn-sm.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')

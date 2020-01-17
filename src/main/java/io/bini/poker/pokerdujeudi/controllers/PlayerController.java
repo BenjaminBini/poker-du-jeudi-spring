@@ -26,6 +26,7 @@ public class PlayerController {
     public String players(Model model) {
         List<Player> players = this.playerService.list();
         model.addAttribute("players", players);
+        model.addAttribute("active", "players");
         return "players";
     }
 

@@ -1,5 +1,6 @@
 package io.bini.poker.pokerdujeudi.service.result;
 
+import io.bini.poker.pokerdujeudi.dto.StatDTO;
 import io.bini.poker.pokerdujeudi.model.Player;
 import io.bini.poker.pokerdujeudi.model.PlayerResult;
 import io.bini.poker.pokerdujeudi.model.PlayerResultKey;
@@ -37,5 +38,12 @@ public class PlayerResultService {
 
     public void save(PlayerResult playerResult) {
         this.playerResultRepository.save(playerResult);
+    }
+
+    public List<StatDTO> getStats() {
+        return this.playerResultRepository.getStats();
+    }
+    public List<StatDTO> getStats(Integer sessionId) {
+        return this.playerResultRepository.getSessionStats(sessionId);
     }
 }

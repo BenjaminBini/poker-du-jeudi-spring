@@ -82,3 +82,31 @@
     border-radius: 5px;
     font-weight: bold;
 }
+
+.pvtColLabel {
+    writing-mode: vertical-lr;
+}
+
+.pivot {
+    overflow: auto;
+}
+
+.pivot table {
+    margin: auto;
+}
+
+.pivot table td {
+    font-weight: bold;
+}
+
+.pvtUi {
+    margin: auto;
+}
+.pivot-chart .pvtRendererArea {
+    margin: 0;
+    padding: 0;
+}
+
+.modebar {
+    display: none;
+}

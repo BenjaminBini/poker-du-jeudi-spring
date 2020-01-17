@@ -17,10 +17,6 @@ var sessionForm = new Vue({
             return this.players.filter(player =>  {
                 return (player.firstName.toLowerCase().indexOf(this.playerSearch.toLowerCase()) >= 0)
                     || (player.lastName.toLowerCase().indexOf(this.playerSearch.toLowerCase()) >= 0)
-            }).sort((a, b) => {
-                if(a.playerId < b.playerId) { return -1; }
-                if(a.playerId > b.playerId) { return 1; }
-                return 0;
             });
         }
     },
@@ -28,6 +24,8 @@ var sessionForm = new Vue({
         selectPlayer(player) {
             this.selectedPlayers.push(player);
             this.players = this.players.filter(p => p.playerId !== player.playerId);
+            this.playerSearch = '';
+            this.$refs.searchInput.focus();
         },
         unselectPlayer(player) {
             this.players.push(player);
@@ -73,6 +71,15 @@ Vue.component('player-result-row', {
                 .then(response => {
                     this.playerResult.buyIns = buyIns;
                 });
+        },
+        toggleInput: function() {
+            this.showInput = !this.showInput;
+            var self = this;
+            this.$nextTick(() => {
+                this.$refs.resultInput.focus();
+                this.$refs.resultInput.select();
+            });
+
         }
     }
 });
@@ -139,10 +146,6 @@ Vue.component('players-results-panel', {
             return this.otherPlayers.filter(player =>  {
                 return (player.firstName.toLowerCase().indexOf(this.playerSearch.toLowerCase()) >= 0)
                     || (player.lastName.toLowerCase().indexOf(this.playerSearch.toLowerCase()) >= 0)
-            }).sort((a, b) => {
-                if(a.playerId < b.playerId) { return -1; }
-                if(a.playerId > b.playerId) { return 1; }
-                return 0;
             });
         }
     }
@@ -152,3 +155,120 @@ Vue.component('players-results-panel', {
 var sessionDetail = new Vue({
     el: '#session-detail'
 });
+
+
+$(function(){
+    axios.get('/api/stats')
+        .then(response => {
+
+            $('.pivot-sum').each(function() {
+                let year = $(this).attr('data-year');
+                $(this).pivotUI(response.data, {
+                    rows: ['firstName'], cols: [], vals: ['result'], aggregatorName: 'Somme en entiers',
+                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a',
+                    rendererName: "Carte de chaleur",
+                    rendererOptions: {
+                        heatmap: {
+                            colorScaleGenerator: function(values) {
+                                return Plotly.d3.scale.linear()
+                                    .domain([Plotly.d3.min(values), 0, Plotly.d3.max(values)])
+                                    .range(["#e67c73", "#ffd666", "#57bb8a"])
+                            }
+                        }
+                    }
+                }, false, 'fr');
+            });
+
+            $('.pivot-detail').each(function() {
+                let year = $(this).attr('data-year');
+                $(this).pivotUI(response.data, {
+                    rows: ['firstName'], cols: ['date'], vals: ['result'], aggregatorName: 'Somme en entiers',
+                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a',
+                    rendererName: "Carte de chaleur",
+                    rendererOptions: {
+                        heatmap: {
+                            colorScaleGenerator: function(values) {
+                                return Plotly.d3.scale.linear()
+                                    .domain([Plotly.d3.min(values), 0, Plotly.d3.max(values)])
+                                    .range(["#e67c73", "#ffd666", "#57bb8a"])
+                            }
+                        }
+                    }
+                }, false, 'fr');
+            });
+
+            $('.pivot-number').each(function() {
+                let year = $(this).attr('data-year');
+                $(this).pivotUI(response.data, {
+                    rows: ['firstName'], cols: [], aggregatorName: 'Nombre',
+                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a'
+                }, false, 'fr');
+            });
+
+            $('.pivot-deviation').each(function() {
+                let year = $(this).attr('data-year');
+                $(this).pivotUI(response.data, {
+                    rows: ['firstName'], cols: [], vals: ['result'], aggregatorName: 'Ecart-type',
+                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a'
+                }, false, 'fr');
+            })
+            var plotRenderers = $.extend($.pivotUtilities.renderers,
+                $.pivotUtilities.plotly_renderers);
+             $(".pivot-stats").pivotUI(response.data, {
+                 rows: ['firstName'], cols: ['date'], vals: ['result'], aggregatorName: 'Somme en entiers',
+                 renderers: plotRenderers,
+                 showUI: true
+             }, false, 'fr');
+        });
+});
+
+$(function(){
+    $('.session-pivot').each(function() {
+        let sessionId = $(this).attr('data-session-id')
+        var plotRenderers = $.extend($.pivotUtilities.renderers,
+            $.pivotUtilities.plotly_renderers);
+        var self = this;
+        axios.get('/api/stats/' + sessionId)
+            .then(response => {
+                $('.session-pivot').each(function() {
+                    let year = $(this).attr('data-year');
+                    $(this).pivotUI(response.data, {
+                        rows: ['firstName'], cols: ['firstName'], vals: ['result'], aggregatorName: 'Somme en entiers',
+                        rendererName: 'Bar Chart',
+                        showUI: false, rowOrder: 'value_z_to_a',
+                        renderers: plotRenderers,
+                        rendererOptions: {
+                            plotly: {
+                                autosize: true,
+                                showlegend: false,
+                                width: document.getElementsByClassName('pivot')[0].clientWidth,
+                                height: 400,
+                                xaxis: {
+                                    tickangle: 90,
+                                    fixedrange: true,
+                                },
+                                yaxis: {
+                                    fixedrange: true,
+                                }
+                            },
+                            plotlyConfig: {
+                                responsive: true,
+                            }
+                        }
+                    }, false, 'fr');
+                });
+            });
+    });
+});
+//
+//
+//
+// $(function(){
+//     axios.get('/api/stats')
+//         .then(response => {
+//             $("#pivot-ui").pivotUI(response.data, {
+//                 rows: ['firstName'], cols: ['date'], vals: ['result'], aggregatorName: 'Somme en entiers',
+//                 filter: function(e) { return e.year === 2019 }, showUI: true
+//             }, false, 'fr');
+//         });
+// });
