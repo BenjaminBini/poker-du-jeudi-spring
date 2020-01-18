@@ -20,6 +20,7 @@ block content
                                 thead.thead-dark
                                     tr
                                         th(scope='col') Date
+                                        th(scope='col') Joueurs
                                         th(scope='col') Vainqueur
                                         th(scope='col') Perdant
                                         th(scope='col') Lieu
@@ -30,14 +31,15 @@ block content
                                             tr
                                                 td
                                                     a(href='/sessions/#{session.sessionId}') #{session.displayDate()}
+                                                td #{session.playerResults.size()}
                                                 td #{session.bestResult.player.firstName} (#{session.bestResult.result} €)
                                                 td #{session.worstResult.player.firstName} (#{session.worstResult.result} €)
                                                 td #{session.place.name}
                                                 td
-                                                    a.btn.btn-secondary.btn-sm.float-right.ml-2(href="/sessions/#{session.sessionId}")
-                                                        i.fa.fa-info-circle
-                                                    a.btn.btn-secondary.btn-sm.float-right(href="/sessions/delete/#{session.sessionId}")
-                                                        i.far.fa-trash-alt
+                                                    a.btn.btn-secondary.btn-sm.icon-button.float-right.ml-2(href="/sessions/#{session.sessionId}")
+                                                        i.material-icons info
+                                                    a.btn.btn-secondary.btn-sm.icon-button.float-right(href="/sessions/delete/#{session.sessionId}")
+                                                        i.material-icons delete
                                     else
                                         tr
                                             td(colspan=5)

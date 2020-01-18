@@ -37,4 +37,14 @@ public interface PlayerResultRepository extends JpaRepository<PlayerResult, Play
             "INNER JOIN season ss " +
             "ON ss.seasonId = s.seasonId where s.sessionId = ?1", nativeQuery=true)
     public List<StatDTO> getSessionStats(Integer sessionId);
+
+
+    @Query(value = "SELECT p.firstName, s.date, pr.result, pr.buyIns, ss.name as year " +
+            "FROM playerResult pr " +
+            "INNER JOIN player p ON p.playerId = pr.playerId " +
+            "INNER JOIN session s ON s.sessionId = pr.sessionId  " +
+            "INNER JOIN season ss ON ss.seasonId = s.seasonId " +
+            "WHERE s.seasonId IN (SELECT seasonId FROM SESSION WHERE sessionId = ?1)" +
+            "AND s.date <= (SELECT date FROM SESSION WHERE sessionId = ?1);", nativeQuery=true)
+    public List<StatDTO> getSeasonStatsUntilDate(Integer sessionId);
 }

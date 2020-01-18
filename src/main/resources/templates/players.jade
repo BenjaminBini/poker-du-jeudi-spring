@@ -15,8 +15,8 @@ block content
                                 tr
                                     td #{player.firstName} #{player.lastName}
                                     td
-                                        a.btn.btn-secondary.btn-sm.float-right(href="/players/delete/#{player.playerId}")
-                                            i.far.fa-trash-alt
+                                        a.btn.btn-secondary.btn-sm.icon-button.float-right(href="/players/delete/#{player.playerId}")
+                                            i.material-icons delete
                         else
                             tr
                                 td(colspan=3)

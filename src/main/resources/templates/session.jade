@@ -8,6 +8,8 @@ block content
                 .row
                     .col-md-6
                         .pivot.pivot-chart.session-pivot.m-auto(data-session-id="#{session.sessionId}")
+                    .col-md-6
+                        .pivot.pivot-chart.until-session-pivot.m-auto(data-session-id="#{session.sessionId}")
                 .row
                     .col-lg-6.mb-4
                         players-results-panel(v-bind:session-id="#{session.sessionId}")
@@ -70,13 +72,13 @@ block content
                 .btn.btn-outline-secondary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
                 .buy-ins {{playerResult.buyIns}}
             td.text-right
-                button.btn.btn-outline-secondary.edit-result(v-on:click="toggleInput()", v-if='!showInput')
-                    i.far.fa-edit
-                .btn.btn-outline-secondary.edit-result(v-if='showInput', focus)
-                    i.fas.fa-check
+                .btn.btn-outline-secondary.btn-sm.icon-button(v-on:click="toggleInput()", v-if='!showInput')
+                    .material-icons edit
+                .btn.btn-outline-secondary.btn-sm.icon-button(v-if='showInput', focus)
+                    .material-icons check
                 .player-result(v-if='showInput')
                     input.form-control(type='number', v-on:blur="save()", v-model="playerResult.result", ref='resultInput')
                 .player-result(v-if='!showInput') {{playerResult.result}} €
             td
-                a.btn.btn-outline-secondary.btn-sm.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
-                    i.far.fa-trash-alt
+                .btn.btn-outline-secondary.btn-sm.icon-button.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
+                    .material-icons delete

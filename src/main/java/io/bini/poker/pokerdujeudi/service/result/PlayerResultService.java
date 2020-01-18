@@ -46,4 +46,5 @@ public class PlayerResultService {
     public List<StatDTO> getStats(Integer sessionId) {
         return this.playerResultRepository.getSessionStats(sessionId);
     }
+    public List<StatDTO> getSeasonStatsUntilDate(Integer sessionId) { return this.playerResultRepository.getSeasonStatsUntilDate(sessionId); }
 }

@@ -223,38 +223,59 @@ $(function(){
 });
 
 $(function(){
+    let renderOptions = {
+        plotly: {
+            autosize: true,
+            showlegend: false,
+            width: document.getElementsByClassName('pivot')[0].clientWidth,
+            height: 400,
+            xaxis: {
+                tickangle: 90,
+                fixedrange: true,
+            },
+            yaxis: {
+                fixedrange: true,
+            }
+        },
+        plotlyConfig: {
+            responsive: true,
+        }
+    };
+
     $('.session-pivot').each(function() {
         let sessionId = $(this).attr('data-session-id')
         var plotRenderers = $.extend($.pivotUtilities.renderers,
             $.pivotUtilities.plotly_renderers);
-        var self = this;
         axios.get('/api/stats/' + sessionId)
             .then(response => {
                 $('.session-pivot').each(function() {
                     let year = $(this).attr('data-year');
+                    renderOptions.plotly.title = 'Classement de la session';
                     $(this).pivotUI(response.data, {
                         rows: ['firstName'], cols: ['firstName'], vals: ['result'], aggregatorName: 'Somme en entiers',
                         rendererName: 'Bar Chart',
                         showUI: false, rowOrder: 'value_z_to_a',
                         renderers: plotRenderers,
-                        rendererOptions: {
-                            plotly: {
-                                autosize: true,
-                                showlegend: false,
-                                width: document.getElementsByClassName('pivot')[0].clientWidth,
-                                height: 400,
-                                xaxis: {
-                                    tickangle: 90,
-                                    fixedrange: true,
-                                },
-                                yaxis: {
-                                    fixedrange: true,
-                                }
-                            },
-                            plotlyConfig: {
-                                responsive: true,
-                            }
-                        }
+                        rendererOptions: renderOptions,
+                    }, false, 'fr');
+                });
+            });
+    });
+    $('.until-session-pivot').each(function() {
+        let sessionId = $(this).attr('data-session-id')
+        var plotRenderers = $.extend($.pivotUtilities.renderers,
+            $.pivotUtilities.plotly_renderers);
+        axios.get('/api/stats/until/' + sessionId)
+            .then(response => {
+                $('.until-session-pivot').each(function() {
+                    let year = $(this).attr('data-year');
+                    renderOptions.plotly.title = 'Classement de la saison';
+                    $(this).pivotUI(response.data, {
+                        rows: ['firstName'], cols: ['firstName'], vals: ['result'], aggregatorName: 'Somme en entiers',
+                        rendererName: 'Bar Chart',
+                        showUI: false, rowOrder: 'value_z_to_a',
+                        renderers: plotRenderers,
+                        rendererOptions: renderOptions,
                     }, false, 'fr');
                 });
             });
