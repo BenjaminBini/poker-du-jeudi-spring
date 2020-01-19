@@ -7,9 +7,25 @@ block content
                 h2.lg-5.mb-3 Session du #{session.displayDate()}
                 .row
                     .col-md-6
-                        .pivot.pivot-chart.session-pivot.m-auto(data-session-id="#{session.sessionId}")
+                        h4.text-center.mb-4 Résultats de la session
+                        .pivot.pivot-chart.chart-component.m-auto(
+                            data-chart-no-title="true",
+                            data-chart-height="350",
+                            data-chart-endpoint="/api/stats/#{session.sessionId}"
+                            data-chart-rows="firstName",
+                            data-chart-cols="",
+                            data-chart-vals="result",
+                            data-chart-title="Classement de la session")
                     .col-md-6
-                        .pivot.pivot-chart.until-session-pivot.m-auto(data-session-id="#{session.sessionId}")
+                        h4.text-center.mb-4 Classement général (après la session)
+                        .pivot.pivot-chart.chart-component.m-auto(data-session-id="#{session.sessionId}",
+                            data-chart-no-title="true",
+                            data-chart-height="350",
+                            data-chart-endpoint="/api/stats/until/#{session.sessionId}"
+                            data-chart-rows="firstName",
+                            data-chart-cols="firstName",
+                            data-chart-vals="result",
+                            data-chart-title="Classement de la saison")
                 .row
                     .col-lg-6.mb-4
                         players-results-panel(v-bind:session-id="#{session.sessionId}")

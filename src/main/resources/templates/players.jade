@@ -32,4 +32,5 @@ block content
                             .form-group
                                 label(for='lastName') Nom
                                 input#lastName.form-control(type='text', name="lastName")
+                            input#csrf.form-control(type='hidden', name='#{_csrf.parameterName}', value='#{_csrf.token}')
                             button.btn.btn-secondary(type='submit') Enregistrer

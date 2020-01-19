@@ -229,6 +229,9 @@ $(function(){
             showlegend: false,
             width: document.getElementsByClassName('pivot')[0].clientWidth,
             height: 400,
+            margin: {
+                b: 100
+            },
             xaxis: {
                 tickangle: 90,
                 fixedrange: true,
@@ -242,54 +245,42 @@ $(function(){
         }
     };
 
-    $('.session-pivot').each(function() {
-        let sessionId = $(this).attr('data-session-id')
+    $('.chart-component').each(function() {
         var plotRenderers = $.extend($.pivotUtilities.renderers,
             $.pivotUtilities.plotly_renderers);
-        axios.get('/api/stats/' + sessionId)
+        let endpoint = $(this).attr('data-chart-endpoint');
+        let title = $(this).attr('data-chart-title');
+        let noTitle = $(this).attr('data-chart-no-title');
+        let noMargin = $(this).attr('data-no-margin');
+        let height = $(this).attr('data-chart-height');
+        let rows = $(this).attr('data-chart-rows');
+        let cols = $(this).attr('data-chart-cols');
+        let vals = $(this).attr('data-chart-vals');
+        axios.get(endpoint)
             .then(response => {
-                $('.session-pivot').each(function() {
-                    let year = $(this).attr('data-year');
-                    renderOptions.plotly.title = 'Classement de la session';
-                    $(this).pivotUI(response.data, {
-                        rows: ['firstName'], cols: ['firstName'], vals: ['result'], aggregatorName: 'Somme en entiers',
-                        rendererName: 'Bar Chart',
-                        showUI: false, rowOrder: 'value_z_to_a',
-                        renderers: plotRenderers,
-                        rendererOptions: renderOptions,
-                    }, false, 'fr');
-                });
-            });
-    });
-    $('.until-session-pivot').each(function() {
-        let sessionId = $(this).attr('data-session-id')
-        var plotRenderers = $.extend($.pivotUtilities.renderers,
-            $.pivotUtilities.plotly_renderers);
-        axios.get('/api/stats/until/' + sessionId)
-            .then(response => {
-                $('.until-session-pivot').each(function() {
-                    let year = $(this).attr('data-year');
-                    renderOptions.plotly.title = 'Classement de la saison';
-                    $(this).pivotUI(response.data, {
-                        rows: ['firstName'], cols: ['firstName'], vals: ['result'], aggregatorName: 'Somme en entiers',
-                        rendererName: 'Bar Chart',
-                        showUI: false, rowOrder: 'value_z_to_a',
-                        renderers: plotRenderers,
-                        rendererOptions: renderOptions,
-                    }, false, 'fr');
-                });
+                renderOptions.plotly.title = noTitle ? '' : title;
+                if (noTitle) {
+                    renderOptions.plotly.margin.t = 0;
+                }
+                if (height) {
+                    renderOptions.plotly.height = height;
+                }
+                if (noMargin) {
+                    renderOptions.plotly.margin = {
+                        l: 50,
+                        r: 50,
+                        b: 100,
+                        t: 0,
+                        pad: 4
+                    };
+                }
+                $(this).pivotUI(response.data, {
+                    rows: [rows], cols: [cols], vals: [vals], aggregatorName: 'Somme en entiers',
+                    rendererName: 'Bar Chart',
+                    showUI: false, rowOrder: 'value_z_to_a',
+                    renderers: plotRenderers,
+                    rendererOptions: renderOptions,
+                }, false, 'fr');
             });
     });
 });
-//
-//
-//
-// $(function(){
-//     axios.get('/api/stats')
-//         .then(response => {
-//             $("#pivot-ui").pivotUI(response.data, {
-//                 rows: ['firstName'], cols: ['date'], vals: ['result'], aggregatorName: 'Somme en entiers',
-//                 filter: function(e) { return e.year === 2019 }, showUI: true
-//             }, false, 'fr');
-//         });
-// });

@@ -70,7 +70,8 @@
                     }
                     trace.x = [trace.name];
                     trace.text= trace.y.map(String);
-                    trace.hoverinfo = 'none';
+                    trace.hovertext= trace.y.map(value => trace.x + ' : ' + value);
+                    trace.hoverinfo = 'text';
                     trace.textposition = 'auto';
                     return $.extend(trace, traceOptions);
                 });

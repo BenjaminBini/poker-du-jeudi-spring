@@ -114,3 +114,15 @@ td.player-result-cell {
 .modebar {
     display: none;
 }
+
+.home-card-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-card-buttons a {
+    margin: 5px;
+    display: flex;
+}

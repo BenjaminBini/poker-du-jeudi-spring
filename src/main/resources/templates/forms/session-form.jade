@@ -38,5 +38,5 @@ form(action="/sessions/add", method="post")
                     each place in places
                         option(value='#{place.placeId}') #{place.name}
 
-
+    input#csrf.form-control(type='hidden', name='#{_csrf.parameterName}', value='#{_csrf.token}')
     button.btn.btn-secondary(type='submit') Enregistrer

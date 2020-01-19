@@ -23,7 +23,6 @@ public class SessionService {
         sessions.sort(Comparator.comparing(Session::getDate));
         return sessions;
     }
-
     public Optional<Session> get(long sessionId) {
         return sessionRepository.findById(sessionId);
     }
@@ -38,4 +37,7 @@ public class SessionService {
         sessionRepository.deleteById(id);
     }
 
+    public Session getLastSession() {
+        return this.sessionRepository.getLastSession();
+    }
 }

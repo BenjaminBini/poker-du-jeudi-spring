@@ -44,7 +44,7 @@ public interface PlayerResultRepository extends JpaRepository<PlayerResult, Play
             "INNER JOIN player p ON p.playerId = pr.playerId " +
             "INNER JOIN session s ON s.sessionId = pr.sessionId  " +
             "INNER JOIN season ss ON ss.seasonId = s.seasonId " +
-            "WHERE s.seasonId IN (SELECT seasonId FROM SESSION WHERE sessionId = ?1)" +
-            "AND s.date <= (SELECT date FROM SESSION WHERE sessionId = ?1);", nativeQuery=true)
+            "WHERE s.seasonId IN (SELECT seasonId FROM session WHERE sessionId = ?1)" +
+            "AND s.date <= (SELECT date FROM session WHERE sessionId = ?1);", nativeQuery=true)
     public List<StatDTO> getSeasonStatsUntilDate(Integer sessionId);
 }

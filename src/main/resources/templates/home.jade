@@ -1,22 +1,39 @@
 extends layout.jade
 
 block content
-  .container
-    .card-group
-      .card
-        .card-body
-          h5.card-title Sessions
-          p.card-text Dernière session
-          a.btn.btn-primary(href="/sessions") Voir toutes les sessions
-          a.btn.btn-primary.icon-button.ml-3(href="/sessions/add")
-            i.material-icons add
-      .card
-        .card-body
-          h5.card-title Joueurs
-          p.card-text Plus assidu
-          a.btn.btn-primary(href="/players") Voir toutes les joueurs
-      .card
-        .card-body
-          h5.card-title Statistiques
-          p.card-text Joueur en tête
-          a.btn.btn-primary(href="/stats") Voir toutes les statistiques
+    .container
+        .card-group
+            .card
+                .card-header
+                    strong Dernière session
+                .card-body
+                    h6.text-center
+                        i Résultats du #{lastSession.displayDate()}
+                    .pivot.pivot-chart.chart-component.m-auto(
+                        data-no-margin="true",
+                        data-chart-no-title="true",
+                        data-chart-height="250",
+                        data-chart-endpoint="/api/stats/#{lastSession.sessionId}"
+                        data-chart-rows="firstName",
+                        data-chart-cols="firstName",
+                        data-chart-vals="result")
+                    .home-card-buttons
+                        a.btn.btn-primary(href="/sessions") Voir toutes les sessions
+                        a.btn.btn-primary(href="/sessions/add")
+                            i.material-icons add
+                            span Nouvelle session
+            .card
+                .card-header
+                    strong Joueurs
+                .card-body
+                    p.card-text Plus assidu
+                    .home-card-buttons
+                        a.btn.btn-primary(href="/players") Voir tous les joueurs
+            .card
+                .card-header
+                    strong Statistiques
+                .card-body
+                    h5.card-title Statistiques
+                    p.card-text Joueur en tête
+                    .home-card-buttons
+                        a.btn.btn-primary(href="/stats") Voir toutes les statistiques
