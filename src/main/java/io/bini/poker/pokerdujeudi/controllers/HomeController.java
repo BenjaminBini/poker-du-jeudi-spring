@@ -22,6 +22,7 @@ public class HomeController {
         model.addAttribute("name", name);
         model.addAttribute("active", "home");
         Session lastSession = this.sessionService.getLastSession();
+        //lastSession = this.sessionService.get(56).get();
         model.addAttribute("lastSession", lastSession);
         return "home";
     }

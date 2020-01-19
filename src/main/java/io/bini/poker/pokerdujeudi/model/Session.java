@@ -6,8 +6,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -53,4 +51,5 @@ public class Session {
     public int getChangeValue() {
         return - this.playerResults.stream().mapToInt(PlayerResult::getResult).sum();
     }
+
 }

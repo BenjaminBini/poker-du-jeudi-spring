@@ -40,4 +40,12 @@ public class SessionService {
     public Session getLastSession() {
         return this.sessionRepository.getLastSession();
     }
+
+    public Session getPreviousSession(long sessionId) {
+        return this.sessionRepository.getSessionBefore(sessionId);
+    }
+
+    public Session getNextSession(long sessionId) {
+        return this.sessionRepository.getSessionAfter(sessionId);
+    }
 }

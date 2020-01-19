@@ -3,34 +3,33 @@ extends layout.jade
 block content
     .container
         .row
-            .col
-                table.table.table-striped
-                    thead.thead-dark
-                        tr
-                            th(scope='col') Nom
-                            th(scope='col')
-                    tbody
-                        if players.size() > 0
-                            each player in players
-                                tr
-                                    td #{player.firstName} #{player.lastName}
-                                    td
-                                        a.btn.btn-secondary.btn-sm.icon-button.float-right(href="/players/delete/#{player.playerId}")
-                                            i.material-icons delete
-                        else
-                            tr
-                                td(colspan=3)
-                                    i Aucune donnée
-            .col
-                .card
-                    h5.card-header Ajouter un joueur
-                    .card-body
-                        form(action="/players", method="post")
-                            .form-group
-                                label(for='firstName') Prénom
-                                input#firstName.form-control(type='text', name="firstName")
-                            .form-group
-                                label(for='lastName') Nom
-                                input#lastName.form-control(type='text', name="lastName")
-                            input#csrf.form-control(type='hidden', name='#{_csrf.parameterName}', value='#{_csrf.token}')
-                            button.btn.btn-secondary(type='submit') Enregistrer
+            .col.mb-4
+                h1 #{players.size()} joueurs
+        .row.row-cols-4
+                if players.size() > 0
+                    each player in players
+                        .col
+                            .card.mb-3
+                                .card-body
+                                    h5.card-title
+                                        strong #{player.firstName}
+                                    if player.playerResults.size() > 1
+                                        .badge.badge-primary #{player.playerResults.size()} sessions
+                                    else
+                                        .badge.badge-primary #{player.playerResults.size()} session
+                                    i.badge.badge-secondary + de statistiques à venir
+        if isAdmin
+            .row
+                .col-md-6
+                    .card
+                        h5.card-header Ajouter un joueur
+                        .card-body
+                            form(action="/players", method="post")
+                                .form-group
+                                    label(for='firstName') Prénom
+                                    input#firstName.form-control(type='text', name="firstName")
+                                .form-group
+                                    label(for='lastName') Nom
+                                    input#lastName.form-control(type='text', name="lastName")
+                                input#csrf.form-control(type='hidden', name='#{_csrf.parameterName}', value='#{_csrf.token}')
+                                button.btn.btn-secondary(type='submit') Enregistrer

@@ -4,32 +4,59 @@ block content
     .container-lg#session-detail
         .row
             .col
-                h2.lg-5.mb-3 Session du #{session.displayDate()}
+                .session-title.mb-4
+                    h2.lg-5 Session du #{session.displayDate()}
+                    .session-links
+                        if previousSession != null
+                            a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
+                        if nextSession != null
+                            a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
                 .row
+                    .col-md-6.mb-3
+                        .card
+                            .card-header
+                                h4.text-center Résultats de la session
+                            .card-body
+                                .pivot.pivot-chart.chart-component.m-auto(
+                                    data-chart-no-title="true",
+                                    data-chart-height="350",
+                                    data-chart-margin-left="30",
+                                    data-chart-margin-right="30",
+                                    data-chart-margin-top="20",
+                                    data-chart-endpoint="/api/stats/#{session.sessionId}"
+                                    data-chart-rows="firstName",
+                                    data-chart-cols="",
+                                    data-chart-vals="result")
+                        if session.season.name != 2018 && session.season.name != 2019
+                            .card.mt-3
+                                .card-header
+                                    h4.text-center Nombre de buy-ins
+                                .card-body
+                                    .pivot.pivot-chart.chart-component.m-auto(
+                                        data-chart-no-title="true",
+                                        data-chart-height="350",
+                                        data-chart-margin-left="30",
+                                        data-chart-margin-right="30",
+                                        data-chart-margin-top="20",
+                                        data-chart-endpoint="/api/stats/#{session.sessionId}"
+                                        data-chart-rows="firstName",
+                                        data-chart-cols="",
+                                        data-chart-vals="buyIns")
                     .col-md-6
-                        h4.text-center.mb-4 Résultats de la session
-                        .pivot.pivot-chart.chart-component.m-auto(
-                            data-chart-no-title="true",
-                            data-chart-height="350",
-                            data-chart-endpoint="/api/stats/#{session.sessionId}"
-                            data-chart-rows="firstName",
-                            data-chart-cols="",
-                            data-chart-vals="result",
-                            data-chart-title="Classement de la session")
-                    .col-md-6
-                        h4.text-center.mb-4 Classement général (après la session)
-                        .pivot.pivot-chart.chart-component.m-auto(data-session-id="#{session.sessionId}",
-                            data-chart-no-title="true",
-                            data-chart-height="350",
-                            data-chart-endpoint="/api/stats/until/#{session.sessionId}"
-                            data-chart-rows="firstName",
-                            data-chart-cols="firstName",
-                            data-chart-vals="result",
-                            data-chart-title="Classement de la saison")
-                .row
-                    .col-lg-6.mb-4
-                        players-results-panel(v-bind:session-id="#{session.sessionId}")
-                    .col-lg-6
+                        .card.mb-3
+                            .card-header
+                                h4.text-center Classement général (après la session)
+                            .card-body
+                                .pivot.pivot-chart.chart-component.m-auto(
+                                    data-chart-no-title="true"
+                                    data-chart-margin-bottom="40",
+                                    data-chart-margin-left="90",
+                                    data-chart-margin-right="30",
+                                    data-chart-endpoint="/api/stats/until/#{session.sessionId}"
+                                    data-chart-rows="firstName",
+                                    data-chart-cols="firstName",
+                                    data-chart-horizontal="true",
+                                    data-chart-vals="result")
                         .card
                             h4.card-header Informations
                             .card-body
@@ -37,64 +64,77 @@ block content
                                     li Lieu : #{session.place.name != null ? session.place.name : '?'}
                                     li Joueurs : #{session.playerResults.size()}
                                     li Monnaie : #{session.changeValue} €
-                        a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une autre session
+                if isAdmin
+                    .row
+                        .col-lg-6.mb-4
+                            players-results-panel(v-bind:session-id="#{session.sessionId}")
+                .row
+                    .col
+                        if isAdmin
+                            a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une autre session
+                        .session-links.ml-0.mt-2
+                            if previousSession != null
+                                a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
+                            if nextSession != null
+                                a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
 
 
-    script(type='text/x-template', id='players-results-panel')
-        .card(v-if='session.date')
-            h4.card-header {{session.playerResults.length}} joueurs présents
-                button.btn.btn-outline-secondary.btn-sm.float-right(@click='showModal()') Ajouter un joueur
-            .card-body
-                table.table.table-striped
-                    thead.thead-dark
-                        tr
-                            th(scope='col') Nom
-                            th.text-right(scope='col') Buy-ins
-                            th.text-right(scope='col') Résultat
-                            th
-                    tbody
-                        tr(is='player-result-row',
-                            v-for='playerResult in session.playerResults',
-                            v-bind:player-result='playerResult',
-                            v-bind:session-id='#{session.sessionId}'
-                            v-on:delete-player-result='deletePlayerResult')
-                        tr(v-if='session.playerResults.length === 0')
-                            td(colspan=4)
-                                i Aucune donnée
-            #add-player.modal.fade(tabindex='-1' role='dialog')
-                .modal-dialog(role='document')
-                    .modal-content
-                        .modal-header
-                            h5.modal-title Ajouter un joueur
-                            button.close(type='button' data-dismiss='modal' aria-label='Close')
-                                span(aria-hidden='true') &times;
-                        .modal-body
-                            div.list-group
-                                div.list-group-item.list-group-item-secondary
-                                    label(for='player-search') Recherchez un joueur
-                                    input#player-search.form-control.form-control-sm(name='player-search', type='text', placeholder='Tapez-ici le nom du joueur', v-model='playerSearch')
-                                div.all-players-list
-                                    button.list-group-item.list-group-item-action.font-weight-bold(type='button', v-for='player in filteredPlayers', :key='player.playerId', v-on:click='addPlayer(player.playerId)') {{player.firstName}}
-                        .modal-footer
-                            button.btn.btn-secondary(type='button' data-dismiss='modal') Annuler
+    if isAdmin
+        script(type='text/x-template', id='players-results-panel')
+            .card(v-if='session.date')
+                h4.card-header {{session.playerResults.length}} joueurs présents
+                    button.btn.btn-outline-secondary.btn-sm.float-right(@click='showModal()') Ajouter un joueur
+                .card-body
+                    table.table.table-striped
+                        thead.thead-dark
+                            tr
+                                th(scope='col') Nom
+                                th.text-right(scope='col') Buy-ins
+                                th.text-right(scope='col') Résultat
+                                th
+                        tbody
+                            tr(is='player-result-row',
+                                v-for='playerResult in session.playerResults',
+                                v-bind:player-result='playerResult',
+                                v-bind:session-id='#{session.sessionId}'
+                                v-on:delete-player-result='deletePlayerResult')
+                            tr(v-if='session.playerResults.length === 0')
+                                td(colspan=4)
+                                    i Aucune donnée
+                #add-player.modal.fade(tabindex='-1' role='dialog')
+                    .modal-dialog(role='document')
+                        .modal-content
+                            .modal-header
+                                h5.modal-title Ajouter un joueur
+                                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                                    span(aria-hidden='true') &times;
+                            .modal-body
+                                div.list-group
+                                    div.list-group-item.list-group-item-secondary
+                                        label(for='player-search') Recherchez un joueur
+                                        input#player-search.form-control.form-control-sm(name='player-search', type='text', placeholder='Tapez-ici le nom du joueur', v-model='playerSearch')
+                                    div.all-players-list
+                                        button.list-group-item.list-group-item-action.font-weight-bold(type='button', v-for='player in filteredPlayers', :key='player.playerId', v-on:click='addPlayer(player.playerId)') {{player.firstName}}
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-dismiss='modal') Annuler
 
 
 
-    script(type='text/x-template', id='player-result-row')
-        tr
-            td {{playerResult.player.firstName}} {{playerResult.player.lastName}}
-            td.text-right
-                .btn.btn-outline-secondary.btn-sm.remove-buy-in(v-on:click="decrementBuyIns()")
-                .btn.btn-outline-secondary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
-                .buy-ins {{playerResult.buyIns}}
-            td.text-right
-                .btn.btn-outline-secondary.btn-sm.icon-button(v-on:click="toggleInput()", v-if='!showInput')
-                    .material-icons edit
-                .btn.btn-outline-secondary.btn-sm.icon-button(v-if='showInput', focus)
-                    .material-icons check
-                .player-result(v-if='showInput')
-                    input.form-control(type='number', v-on:blur="save()", v-model="playerResult.result", ref='resultInput')
-                .player-result(v-if='!showInput') {{playerResult.result}} €
-            td
-                .btn.btn-outline-secondary.btn-sm.icon-button.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
-                    .material-icons delete
+        script(type='text/x-template', id='player-result-row')
+            tr
+                td {{playerResult.player.firstName}} {{playerResult.player.lastName}}
+                td.text-right
+                    .btn.btn-outline-secondary.btn-sm.remove-buy-in(v-on:click="decrementBuyIns()")
+                    .btn.btn-outline-secondary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
+                    .buy-ins {{playerResult.buyIns}}
+                td.text-right
+                    .btn.btn-outline-secondary.btn-sm.icon-button(v-on:click="toggleInput()", v-if='!showInput')
+                        .material-icons edit
+                    .btn.btn-outline-secondary.btn-sm.icon-button(v-if='showInput', focus)
+                        .material-icons check
+                    .player-result(v-if='showInput')
+                        input.form-control(type='number', v-on:blur="save()", v-model="playerResult.result", ref='resultInput')
+                    .player-result(v-if='!showInput') {{playerResult.result}} €
+                td
+                    .btn.btn-outline-secondary.btn-sm.icon-button.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
+                        .material-icons delete

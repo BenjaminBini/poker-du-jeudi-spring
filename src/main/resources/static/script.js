@@ -230,7 +230,8 @@ $(function(){
             width: document.getElementsByClassName('pivot')[0].clientWidth,
             height: 400,
             margin: {
-                b: 100
+                b: 100,
+                pad: 10
             },
             xaxis: {
                 tickangle: 90,
@@ -250,12 +251,17 @@ $(function(){
             $.pivotUtilities.plotly_renderers);
         let endpoint = $(this).attr('data-chart-endpoint');
         let title = $(this).attr('data-chart-title');
-        let noTitle = $(this).attr('data-chart-no-title');
-        let noMargin = $(this).attr('data-no-margin');
+        let noTitle = $(this).attr('data-chart-no-title') == 'true';
         let height = $(this).attr('data-chart-height');
         let rows = $(this).attr('data-chart-rows');
         let cols = $(this).attr('data-chart-cols');
         let vals = $(this).attr('data-chart-vals');
+        let marginLeft = $(this).attr('data-chart-margin-left');
+        let marginBottom = $(this).attr('data-chart-margin-bottom');
+        let marginTop = $(this).attr('data-chart-margin-top');
+        let marginRight = $(this).attr('data-chart-margin-right');
+        let horizontal = $(this).attr('data-chart-horizontal') == 'true';
+        let aggragator = $(this).attr('data-chart-aggragator');
         axios.get(endpoint)
             .then(response => {
                 renderOptions.plotly.title = noTitle ? '' : title;
@@ -265,19 +271,26 @@ $(function(){
                 if (height) {
                     renderOptions.plotly.height = height;
                 }
-                if (noMargin) {
-                    renderOptions.plotly.margin = {
-                        l: 50,
-                        r: 50,
-                        b: 100,
-                        t: 0,
-                        pad: 4
-                    };
+                if (marginLeft) {
+                    renderOptions.plotly.margin.l = parseInt(marginLeft);
+                }
+                if (marginBottom) {
+                    renderOptions.plotly.margin.b = parseInt(marginBottom);
+                }
+                if (marginTop) {
+                    renderOptions.plotly.margin.t = parseInt(marginTop);
+                }
+                if (marginRight) {
+                    renderOptions.plotly.margin.r = parseInt(marginRight);
+                }
+                if (horizontal) {
+                    renderOptions.plotly.xaxis.tickangle = 0;
+                    delete renderOptions.plotly.height;
                 }
                 $(this).pivotUI(response.data, {
-                    rows: [rows], cols: [cols], vals: [vals], aggregatorName: 'Somme en entiers',
-                    rendererName: 'Bar Chart',
-                    showUI: false, rowOrder: 'value_z_to_a',
+                    rows: [rows], cols: [cols], vals: [vals], aggregatorName: aggragator ? aggragator : 'Somme en entiers',
+                    rendererName: horizontal ? 'Horizontal Bar Chart' : 'Bar Chart',
+                    showUI: false, rowOrder: horizontal ? 'value_a_to_z' : 'value_z_to_a',
                     renderers: plotRenderers,
                     rendererOptions: renderOptions,
                 }, false, 'fr');

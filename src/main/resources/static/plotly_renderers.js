@@ -68,11 +68,17 @@
                         trace.x = transpose ? values : labels;
                         trace.y = transpose ? labels : values;
                     }
-                    trace.x = [trace.name];
-                    trace.text= trace.y.map(String);
-                    trace.hovertext= trace.y.map(value => trace.x + ' : ' + value);
-                    trace.hoverinfo = 'text';
                     trace.textposition = 'auto';
+                    trace.hoverinfo = 'text';
+                    if (!transpose) {
+                        trace.x = [trace.name];
+                        trace.hovertext = trace.y.map(value => trace.x + ' : ' + value);
+                        trace.text= trace.y.map(String);
+                    } else {
+                        trace.text= trace.x.map(String);
+                        trace.hovertext = trace.y.map((value, index) => value + ' : ' + trace.x[index]);
+
+                    }
                     return $.extend(trace, traceOptions);
                 });
                 if (transpose) {
@@ -95,6 +101,9 @@
                     width: window.innerWidth / 1.4,
                     height: window.innerHeight / 1.4 - 50
                 };
+                if (transpose) {
+                    layout.height = pivotData.rowKeys.length * 30;
+                }
                 if (traceOptions.type === 'pie') {
                     columns = Math.ceil(Math.sqrt(data.length));
                     rows = Math.ceil(data.length / columns);

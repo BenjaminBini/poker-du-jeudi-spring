@@ -3,6 +3,7 @@ package io.bini.poker.pokerdujeudi.service.player;
 import io.bini.poker.pokerdujeudi.model.Player;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class PlayerService {
         return playerRepository.findById(playerId);
     }
 
+    @RolesAllowed("ADMIN")
     public Player create(Player player) {
         return playerRepository.save(player);
     }

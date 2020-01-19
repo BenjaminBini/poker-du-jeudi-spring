@@ -10,30 +10,54 @@ block content
                     h6.text-center
                         i Résultats du #{lastSession.displayDate()}
                     .pivot.pivot-chart.chart-component.m-auto(
-                        data-no-margin="true",
                         data-chart-no-title="true",
                         data-chart-height="250",
+                        data-chart-margin-top="20"
+                        data-chart-margin-left="40"
+                        data-chart-margin-right="40"
                         data-chart-endpoint="/api/stats/#{lastSession.sessionId}"
                         data-chart-rows="firstName",
                         data-chart-cols="firstName",
                         data-chart-vals="result")
                     .home-card-buttons
+                        a.btn.btn-outline-primary.btn-sm(href="/sessions/#{lastSession.sessionId}") Détail de la session
                         a.btn.btn-primary(href="/sessions") Voir toutes les sessions
-                        a.btn.btn-primary(href="/sessions/add")
-                            i.material-icons add
-                            span Nouvelle session
+                        if isAdmin
+                            a.btn.btn-primary(href="/sessions/add")
+                                i.material-icons add
+                                span Nouvelle session
             .card
                 .card-header
                     strong Joueurs
                 .card-body
-                    p.card-text Plus assidu
+                    h6.text-center
+                        i Participations pour la saison #{lastSession.season.name}
+                    .pivot.pivot-chart.chart-component.m-auto(
+                        data-chart-no-title="true",
+                        data-chart-height="300",
+                        data-chart-margin-left="80"
+                        data-chart-margin-bottom="40"
+                        data-chart-endpoint="/api/stats/until/#{lastSession.sessionId}"
+                        data-chart-rows="firstName",
+                        data-chart-cols="",
+                        data-chart-vals="result",
+                        data-chart-horizontal="true",
+                        data-chart-aggragator="Nombre")
                     .home-card-buttons
                         a.btn.btn-primary(href="/players") Voir tous les joueurs
             .card
                 .card-header
                     strong Statistiques
                 .card-body
-                    h5.card-title Statistiques
-                    p.card-text Joueur en tête
+                    h6.text-center
+                        i Classement au #{lastSession.displayDate()}
+                    .pivot.pivot-chart.chart-component.m-auto(
+                        data-chart-no-title="true",
+                        data-chart-margin-left="80"
+                        data-chart-endpoint="/api/stats/until/#{lastSession.sessionId}"
+                        data-chart-rows="firstName",
+                        data-chart-cols="firstName",
+                        data-chart-horizontal="true",
+                        data-chart-vals="result")
                     .home-card-buttons
                         a.btn.btn-primary(href="/stats") Voir toutes les statistiques

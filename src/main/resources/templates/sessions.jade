@@ -32,18 +32,23 @@ block content
                                                 td
                                                     a(href='/sessions/#{session.sessionId}') #{session.displayDate()}
                                                 td #{session.playerResults.size()}
-                                                td #{session.bestResult.player.firstName} (#{session.bestResult.result} €)
-                                                td #{session.worstResult.player.firstName} (#{session.worstResult.result} €)
-                                                td #{session.place.name}
+                                                td
+                                                    .badge.badge-success #{session.bestResult.player.firstName} (#{session.bestResult.result} €)
+                                                td
+                                                    .badge.badge-danger #{session.worstResult.player.firstName} (#{session.worstResult.result} €)
+                                                td
+                                                    .badge.badge-info #{session.place.name}
                                                 td
                                                     a.btn.btn-secondary.btn-sm.icon-button.float-right.ml-2(href="/sessions/#{session.sessionId}")
                                                         i.material-icons info
-                                                    a.btn.btn-secondary.btn-sm.icon-button.float-right(href="/sessions/delete/#{session.sessionId}")
-                                                        i.material-icons delete
+                                                    if isAdmin
+                                                        a.btn.btn-secondary.btn-sm.icon-button.float-right(href="/sessions/delete/#{session.sessionId}")
+                                                            i.material-icons delete
                                     else
                                         tr
                                             td(colspan=5)
                                                 i Aucune donnée
-        .row
-            .col
-                a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une session
+        if isAdmin
+            .row
+                .col
+                    a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une session

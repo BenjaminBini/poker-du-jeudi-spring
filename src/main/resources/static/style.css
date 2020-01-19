@@ -126,3 +126,23 @@ td.player-result-cell {
     margin: 5px;
     display: flex;
 }
+
+.session-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.session-links {
+    margin-left: 10px;
+}
+
+.session-links a {
+    width: 150px;
+    margin: 5px 0;
+}
+
+.badge {
+    font-size: 80%;
+}
