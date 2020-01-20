@@ -25,7 +25,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(csrfTokenAddingInterceptor());
-        registry.addInterceptor(isAdminInterceptor());
+        registry.addInterceptor(userRoleInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
     }
 
@@ -42,7 +42,7 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         };
     }
 
-    @Bean HandlerInterceptor isAdminInterceptor() {
+    @Bean HandlerInterceptor userRoleInterceptor() {
         return new HandlerInterceptorAdapter() {
             @Override
             public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
@@ -50,6 +50,9 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
                     Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
                     boolean isAdmin = authorities.stream().filter(a -> a.getAuthority().equals("ROLE_ADMIN")).count() > 0;
                     modelAndView.addObject("isAdmin", isAdmin);
+
+                    boolean isLoggedIn = authorities.stream().filter(a -> a.getAuthority().equals("ROLE_ANONYMOUS")).count() == 0;
+                    modelAndView.addObject("isLoggedIn", isLoggedIn);
                 }
             }
         };
