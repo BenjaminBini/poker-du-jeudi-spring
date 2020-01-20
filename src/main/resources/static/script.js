@@ -223,47 +223,47 @@ $(function(){
 });
 
 $(function(){
-    let renderOptions = {
-        plotly: {
-            autosize: true,
-            showlegend: false,
-            width: document.getElementsByClassName('pivot')[0].clientWidth,
-            height: 400,
-            margin: {
-                b: 100,
-                pad: 10
-            },
-            xaxis: {
-                tickangle: 90,
-                fixedrange: true,
-            },
-            yaxis: {
-                fixedrange: true,
-            }
-        },
-        plotlyConfig: {
-            responsive: true,
-        }
-    };
-
     $('.chart-component').each(function() {
-        var plotRenderers = $.extend($.pivotUtilities.renderers,
-            $.pivotUtilities.plotly_renderers);
         let endpoint = $(this).attr('data-chart-endpoint');
-        let title = $(this).attr('data-chart-title');
-        let noTitle = $(this).attr('data-chart-no-title') == 'true';
-        let height = $(this).attr('data-chart-height');
-        let rows = $(this).attr('data-chart-rows');
-        let cols = $(this).attr('data-chart-cols');
-        let vals = $(this).attr('data-chart-vals');
-        let marginLeft = $(this).attr('data-chart-margin-left');
-        let marginBottom = $(this).attr('data-chart-margin-bottom');
-        let marginTop = $(this).attr('data-chart-margin-top');
-        let marginRight = $(this).attr('data-chart-margin-right');
-        let horizontal = $(this).attr('data-chart-horizontal') == 'true';
-        let aggragator = $(this).attr('data-chart-aggragator');
         axios.get(endpoint)
             .then(response => {
+                let renderOptions = {
+                    plotly: {
+                        autosize: true,
+                        showlegend: false,
+                        width: document.getElementsByClassName('pivot')[0].clientWidth,
+                        height: 400,
+                        dragmode: false,
+                        margin: {
+                            b: 100,
+                            pad: 10
+                        },
+                        xaxis: {
+                            fixedrange: true,
+                        },
+                        yaxis: {
+                            fixedrange: true,
+                        }
+                    },
+                    plotlyConfig: {
+                        responsive: true,
+                    }
+                };
+                var plotRenderers = $.extend($.pivotUtilities.renderers,
+                    $.pivotUtilities.plotly_renderers);
+                let title = $(this).attr('data-chart-title');
+                let noTitle = $(this).attr('data-chart-no-title') == 'true';
+                let height = $(this).attr('data-chart-height');
+                let rows = $(this).attr('data-chart-rows');
+                let cols = $(this).attr('data-chart-cols');
+                let vals = $(this).attr('data-chart-vals');
+                let marginLeft = $(this).attr('data-chart-margin-left');
+                let marginBottom = $(this).attr('data-chart-margin-bottom');
+                let marginTop = $(this).attr('data-chart-margin-top');
+                let marginRight = $(this).attr('data-chart-margin-right');
+                let horizontal = $(this).attr('data-chart-horizontal') == 'true';
+                let aggragator = $(this).attr('data-chart-aggragator');
+
                 renderOptions.plotly.title = noTitle ? '' : title;
                 if (noTitle) {
                     renderOptions.plotly.margin.t = 0;
@@ -286,6 +286,8 @@ $(function(){
                 if (horizontal) {
                     renderOptions.plotly.xaxis.tickangle = 0;
                     delete renderOptions.plotly.height;
+                } else {
+                    renderOptions.plotly.xaxis.tickangle = 90;
                 }
                 $(this).pivotUI(response.data, {
                     rows: [rows], cols: [cols], vals: [vals], aggregatorName: aggragator ? aggragator : 'Somme en entiers',
