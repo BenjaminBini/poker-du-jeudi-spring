@@ -16,38 +16,20 @@ block content
                 #pills-tabContent.tab-content
                     each season, index in seasons
                         .tab-pane.fade.show(id='pills-#{season.name}', class='#{index == 0 ? "active" : ""}', role='tabpanel', aria-labelledby='pills-#{season.name}-tab')
-                            table.table.table-striped
-                                thead.thead-dark
-                                    tr
-                                        th(scope='col') Date
-                                        th(scope='col') Joueurs
-                                        th(scope='col') Vainqueur
-                                        th(scope='col') Perdant
-                                        th(scope='col') Lieu
-                                        th(scope='col')
-                                tbody
-                                    if sessions[season.seasonId] != null
-                                        each session in sessions[season.seasonId]
-                                            tr
-                                                td
-                                                    a(href='/sessions/#{session.sessionId}') #{session.displayDate()}
-                                                td #{session.playerResults.size()}
-                                                td
-                                                    .badge.badge-success #{session.bestResult.player.firstName} (#{session.bestResult.result} €)
-                                                td
-                                                    .badge.badge-danger #{session.worstResult.player.firstName} (#{session.worstResult.result} €)
-                                                td
-                                                    .badge.badge-info #{session.place.name}
-                                                td
-                                                    a.btn.btn-secondary.btn-sm.icon-button.float-right.ml-2(href="/sessions/#{session.sessionId}")
-                                                        i.material-icons info
-                                                    if isAdmin
-                                                        a.btn.btn-secondary.btn-sm.icon-button.float-right(href="/sessions/delete/#{session.sessionId}")
-                                                            i.material-icons delete
-                                    else
-                                        tr
-                                            td(colspan=5)
-                                                i Aucune donnée
+                            .row
+                                if sessions[season.seasonId] != null
+                                    each session in sessions[season.seasonId]
+                                        .col-lg-3.col-md-4.col-sm-6.col-12
+                                            .card.mb-3
+                                                .card-body
+                                                    h5.card-title
+                                                        strong #{session.displayDate()}
+                                                    p
+                                                        .badge.badge-info #{session.playerResults.size()} joueurs
+                                                        .badge.badge-success #{session.bestResult.player.firstName} (#{session.bestResult.result} €)
+                                                        .badge.badge-danger #{session.worstResult.player.firstName} (#{session.worstResult.result} €)
+                                                        .badge.badge-info Chez #{session.place.name}
+                                                    a.btn.btn-outline-primary(href='/sessions/#{session.sessionId}') Détail
         if isAdmin
             .row
                 .col
