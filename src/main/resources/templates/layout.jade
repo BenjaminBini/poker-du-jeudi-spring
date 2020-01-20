@@ -9,11 +9,13 @@ html
         link(href='/style.css', rel='stylesheet')
         link(href='/pivot.css', rel='stylesheet')
         link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
-        title Hello, world!
+        title Poker du Jeudi
     body
         nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.mb-4
             .container
-                a.navbar-brand(href='/') Poker du Jeudi
+                a.navbar-brand(href='/')
+                    img(src='/apple-touch-icon.png', style='width: 45px; margin-right: 15px')
+                    | Poker du Jeudi
                 button.navbar-toggler(aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation' data-target='#navbarSupportedContent' data-toggle='collapse' type='button')
                     span.navbar-toggler-icon
                 #navbarSupportedContent.collapse.navbar-collapse
@@ -26,7 +28,10 @@ html
                         +menuItem('Sessions', '/sessions', 'sessions')
                         +menuItem('Stats', '/stats', 'stats')
                     div.navbar-nav
-                        a.nav-link(href="/login") Connexion
+                        if isLoggedIn
+                            a.nav-link(href="/logout") Déconnexion
+                        else
+                            a.nav-link(href="/login") Connexion
         block content
 
         .container
