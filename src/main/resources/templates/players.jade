@@ -5,18 +5,18 @@ block content
         .row
             .col.mb-4
                 h1 #{players.size()} joueurs
-        .row.row-cols-4
+        .row
                 if players.size() > 0
                     each player in players
-                        .col
+                        .col-lg-3.col-md-4.col-sm-6.col-12
                             .card.mb-3
                                 .card-body
                                     h5.card-title
                                         strong #{player.firstName}
                                     if player.playerResults.size() > 1
-                                        .badge.badge-primary #{player.playerResults.size()} sessions
+                                        .badge.badge-primary.mr-2 #{player.playerResults.size()} sessions
                                     else
-                                        .badge.badge-primary #{player.playerResults.size()} session
+                                        .badge.badge-primary.mr-2 #{player.playerResults.size()} session
                                     i.badge.badge-secondary + de statistiques à venir
         if isAdmin
             .row
