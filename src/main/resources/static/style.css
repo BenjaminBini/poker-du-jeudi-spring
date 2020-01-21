@@ -87,6 +87,26 @@ td.player-result-cell {
     font-size: 16px;
 }
 
+.btn-primary,
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active,
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active,
+.btn-primary:focus, .btn-primary.focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
+    background: #F44336;
+    border-color: #F44336;
+    border-radius: 0;
+    box-shadow: none !important;
+}
+.btn-primary:hover, .btn-outline-primary:hover {
+    background: #FF5252;
+    border-color: #FF5252;
+}
+
+.btn-outline-primary {
+    color: #F44336;
+    border-color: #F44336;
+    border-radius: 0;
+}
+
 .pvtColLabel {
     writing-mode: vertical-lr;
 }
@@ -152,6 +172,10 @@ td.player-result-cell {
     color: white;
     border-radius: 0 !important;
     border-bottom: 0;
+}
+
+.card-header h4 {
+    margin-bottom: 0;
 }
 
 .card {

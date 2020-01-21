@@ -8,9 +8,9 @@ block content
                     h2.lg-5 Session du #{session.displayDate()}
                     .session-links
                         if previousSession != null
-                            a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
+                            a.btn.btn-outline-primary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
                         if nextSession != null
-                            a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
+                            a.btn.btn-outline-primary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
                 .row
                     .col-md-6.mb-3
                         .card
@@ -60,7 +60,7 @@ block content
                                     data-chart-horizontal="true",
                                     data-chart-vals="result")
                         .card
-                            h4.card-header Informations
+                            h4.card-header.text-center Informations
                             .card-body
                                 ul
                                     li Lieu : #{session.place.name != null ? session.place.name : '?'}
@@ -73,19 +73,19 @@ block content
                 .row
                     .col
                         if isAdmin
-                            a.btn.btn-outline-secondary.mt-3(href="/sessions/add") Ajouter une autre session
+                            a.btn.btn-outline-primary.mt-3(href="/sessions/add") Ajouter une autre session
                         .session-links.ml-0.mt-2
                             if previousSession != null
-                                a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
+                                a.btn.btn-outline-primary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
                             if nextSession != null
-                                a.btn.btn-outline-secondary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
+                                a.btn.btn-outline-primary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
 
 
     if isAdmin
         script(type='text/x-template', id='players-results-panel')
             .card(v-if='session.date')
                 h4.card-header {{session.playerResults.length}} joueurs présents
-                    button.btn.btn-outline-secondary.btn-sm.float-right(@click='showModal()') Ajouter un joueur
+                    button.btn.btn-outline-primary.btn-sm.float-right(@click='showModal()') Ajouter un joueur
                 .card-body
                     table.table.table-striped
                         thead.thead-dark
@@ -118,7 +118,7 @@ block content
                                     div.all-players-list
                                         button.list-group-item.list-group-item-action.font-weight-bold(type='button', v-for='player in filteredPlayers', :key='player.playerId', v-on:click='addPlayer(player.playerId)') {{player.firstName}}
                             .modal-footer
-                                button.btn.btn-secondary(type='button' data-dismiss='modal') Annuler
+                                button.btn.btn-primary(type='button' data-dismiss='modal') Annuler
 
 
 
@@ -126,17 +126,17 @@ block content
             tr
                 td {{playerResult.player.firstName}} {{playerResult.player.lastName}}
                 td.text-right
-                    .btn.btn-outline-secondary.btn-sm.remove-buy-in(v-on:click="decrementBuyIns()")
-                    .btn.btn-outline-secondary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
+                    .btn.btn-outline-primary.btn-sm.remove-buy-in(v-on:click="decrementBuyIns()")
+                    .btn.btn-outline-primary.btn-sm.add-buy-in(v-on:click="incrementBuyIns()")
                     .buy-ins {{playerResult.buyIns}}
                 td.text-right
-                    .btn.btn-outline-secondary.btn-sm.icon-button(v-on:click="toggleInput()", v-if='!showInput')
+                    .btn.btn-outline-primary.btn-sm.icon-button(v-on:click="toggleInput()", v-if='!showInput')
                         .material-icons edit
-                    .btn.btn-outline-secondary.btn-sm.icon-button(v-if='showInput', focus)
+                    .btn.btn-outline-primary.btn-sm.icon-button(v-if='showInput', focus)
                         .material-icons check
                     .player-result(v-if='showInput')
                         input.form-control(type='number', v-on:blur="save()", v-model="playerResult.result", ref='resultInput')
                     .player-result(v-if='!showInput') {{playerResult.result}} €
                 td
-                    .btn.btn-outline-secondary.btn-sm.icon-button.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
+                    .btn.btn-outline-primary.btn-sm.icon-button.float-right(v-on:click='$emit("delete-player-result", playerResult.player.playerId)')
                         .material-icons delete
