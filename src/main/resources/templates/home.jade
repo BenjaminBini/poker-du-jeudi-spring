@@ -3,7 +3,7 @@ extends layout.jade
 block content
     .container
         .row
-            .col
+            .col-md-4
                 .card
                     .card-header
                         strong Dernière session
@@ -28,7 +28,7 @@ block content
                                 a.btn.btn-primary(href="/sessions/add")
                                     i.material-icons add
                                     span Nouvelle session
-            .col
+            .col-md-4
                 .card
                     .card-header
                         strong Joueurs
@@ -48,7 +48,7 @@ block content
                             data-chart-aggragator="Nombre")
                         .home-card-buttons
                             a.btn.btn-primary(href="/players") Voir tous les joueurs
-            .col
+            .col-md-4
                 .card
                     .card-header
                         strong Statistiques
