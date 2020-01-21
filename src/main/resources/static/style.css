@@ -146,3 +146,23 @@ td.player-result-cell {
 .badge {
     font-size: 80%;
 }
+
+.card-header {
+    background: #F44336;
+    color: white;
+    border-radius: 0 !important;
+    border-bottom: 0;
+}
+
+.card {
+    border-radius: 0;
+    border: 0;
+}
+
+.card-body {
+    border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.card-header + .card-body {
+    border-top: 0;
+}
