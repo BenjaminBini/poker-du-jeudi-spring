@@ -8,8 +8,6 @@ import io.bini.poker.pokerdujeudi.service.result.PlayerResultService;
 import io.bini.poker.pokerdujeudi.service.season.SeasonService;
 import io.bini.poker.pokerdujeudi.service.session.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +50,6 @@ public class SessionController {
 
     @GetMapping("{sessionId}")
     public String session(Model model, @PathVariable long sessionId) {
-
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
         Optional<Session> session = this.sessionService.get(sessionId);
         model.addAttribute("session", session.get());
         model.addAttribute("active", "sessions");
