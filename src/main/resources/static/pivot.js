@@ -259,7 +259,7 @@
                   case "var":
                     return this.s / (this.n - ddof);
                   case "stdev":
-                    return Math.sqrt(this.s / (this.n - ddof));
+                    return Math.round(Math.sqrt(this.s / (this.n - ddof)) * 100) / 100;
                 }
               },
               format: formatter,
