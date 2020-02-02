@@ -21,9 +21,9 @@ block content
                                     each session in sessions[season.seasonId]
                                         .col-lg-3.col-md-4.col-sm-6.col-12
                                             .card.mb-3
+                                                .card-header.small
+                                                    strong #{session.displayDate()}
                                                 .card-body
-                                                    h5.card-title
-                                                        strong #{session.displayDate()}
                                                     p
                                                         .badge.badge-info #{session.playerResults.size()} joueurs
                                                         .badge.badge-success #{session.bestResult.player.firstName} (#{session.bestResult.result} €)

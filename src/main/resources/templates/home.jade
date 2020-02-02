@@ -4,7 +4,7 @@ block content
     .container
         .row
             .col-md-4
-                .card
+                .card.mb-3
                     .card-header
                         strong Dernière session
                     .card-body
@@ -28,14 +28,14 @@ block content
                                     .rect4
                                     .rect5
                         .home-card-buttons
-                            a.btn.btn-outline-primary.btn-sm(href="/sessions/#{lastSession.sessionId}") Détail de la session
+                            a.btn.btn-outline-primary(href="/sessions/#{lastSession.sessionId}") Détail de la session
                             a.btn.btn-primary(href="/sessions") Voir toutes les sessions
                             if isAdmin
                                 a.btn.btn-primary(href="/sessions/add")
                                     i.material-icons add
                                     span Nouvelle session
             .col-md-4
-                .card
+                .card.mb-3
                     .card-header
                         strong Joueurs
                     .card-body
@@ -51,7 +51,7 @@ block content
                             data-chart-cols="",
                             data-chart-vals="result",
                             data-chart-horizontal="true",
-                            data-chart-aggragator="Nombre")
+                            data-chart-aggregator="Nombre")
                                 .spinner
                                     .rect1
                                     .rect2
@@ -61,7 +61,7 @@ block content
                         .home-card-buttons
                             a.btn.btn-primary(href="/players") Voir tous les joueurs
             .col-md-4
-                .card
+                .card.mb-3
                     .card-header
                         strong Statistiques
                     .card-body

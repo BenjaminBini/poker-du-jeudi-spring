@@ -18,59 +18,101 @@ block content
                         li.nav-item
                             a.nav-link(id="#pills-stats-tab", data-toggle='pill' href='#pills-stats' role='tab' aria-controls='pills-stats') Analyse
         #pills-tabContent.tab-content
-            each season, index in seasons
-                .tab-pane.fade.show(id='pills-#{season.name}', class='#{index == 0 ? "active" : ""}', role='tabpanel', aria-labelledby='pills-#{season.name}-tab')
+            mixin seasonTab(season, index)
+                .tab-pane.fade.show(id='pills-#{season}', class='#{index == 0 ? "active" : ""}', role='tabpanel', aria-labelledby='pills-#{season}-tab')
                     .container
                         .row
                             .col
                                 ul#pills-subtab.nav.nav-pills.mb-3(role='tablist')
                                     li.nav-item
-                                        a.nav-link.active(id="#pills-#{season.name}-tab-1", data-toggle='pill' href='#pills-#{season.name}-1' role='tab' aria-controls='pills-#{season.name}-1' aria-selected='true') Gains
+                                        a.nav-link.active(id="#pills-#{season}-tab-1", data-toggle='pill' href='#pills-#{season}-1' role='tab' aria-controls='pills-#{season}-1' aria-selected='true') Statistiques
                                     li.nav-item
-                                       a.nav-link(id="#pills-#{season.name}-tab-2", data-toggle='pill' href='#pills-#{season.name}-2' role='tab' aria-controls='pills-#{season.name}-2') Détails
-                                    li.nav-item
-                                       a.nav-link(id="#pills-#{season.name}-tab-3", data-toggle='pill' href='#pills-#{season.name}-3' role='tab' aria-controls='pills-#{season.name}-2') Présence
-                                    li.nav-item
-                                       a.nav-link(id="#pills-#{season.name}-tab-4", data-toggle='pill' href='#pills-#{season.name}-4' role='tab' aria-controls='pills-#{season.name}-4') Variance
+                                       a.nav-link(id="#pills-#{season}-tab-2", data-toggle='pill' href='#pills-#{season}-2' role='tab' aria-controls='pills-#{season}-2') Détail
 
                     #pills-subtabContent.tab-content
-                        .tab-pane.fade.show(id='pills-#{season.name}-1', class='active', role='tabpanel', aria-labelledby='pills-#{season.name}-tab-1')
+                        .tab-pane.fade.show(id='pills-#{season}-1', class='active', role='tabpanel', aria-labelledby='pills-#{season}-tab-1')
                             .container
-                                .pivot.pivot-sum(data-year='#{season.name}')
-                        .tab-pane.fade.show(id='pills-#{season.name}-2', role='tabpanel', aria-labelledby='pills-#{season.name}-tab-2')
-                            .pivot.pivot-detail(data-year='#{season.name}')
-                        .tab-pane.fade.show(id='pills-#{season.name}-3', role='tabpanel', aria-labelledby='pills-#{season.name}-tab-3')
-                            .container
-                                .pivot.pivot-number(data-year='#{season.name}')
-                        .tab-pane.fade.show(id='pills-#{season.name}-4', role='tabpanel', aria-labelledby='pills-#{season.name}-tab-4')
-                            .container
-                                .pivot.pivot-deviation(data-year='#{season.name}')
-            .tab-pane.fade.show(id='pills-all', role='tabpanel', aria-labelledby='pills-all-tab')
-                .container
-                    .row
-                        .col
-                            ul#pills-subtab.nav.nav-pills.mb-3(role='tablist')
-                                li.nav-item
-                                    a.nav-link.active(id="#pills-all-tab-1", data-toggle='pill' href='#pills-all-1' role='tab' aria-controls='pills-all-1' aria-selected='true') Gains
-                                li.nav-item
-                                   a.nav-link(id="#pills-all-tab-2", data-toggle='pill' href='#pills-all-2' role='tab' aria-controls='pills-all-2') Détails
-                                li.nav-item
-                                   a.nav-link(id="#pills-all-tab-3", data-toggle='pill' href='#pills-all-3' role='tab' aria-controls='pills-all-3') Présence
-                                li.nav-item
-                                   a.nav-link(id="#pills-all-tab-4", data-toggle='pill' href='#pills-all-4' role='tab' aria-controls='pills-all-4') Variance
-
-                #pills-subtabContent.tab-content
-                    .tab-pane.fade.show(id='pills-all-1', class='active', role='tabpanel', aria-labelledby='pills-all-tab-1')
-                        .container
-                            .pivot.pivot-sum(data-year='all')
-                    .tab-pane.fade.show(id='pills-all-2', role='tabpanel', aria-labelledby='pills-all-tab-2')
-                        .pivot.pivot-detail(data-year='all')
-                    .tab-pane.fade.show(id='pills-all-3', role='tabpanel', aria-labelledby='pills-all-tab-3')
-                        .container
-                            .pivot.pivot-number(data-year='all')
-                    .tab-pane.fade.show(id='pills-all-4', role='tabpanel', aria-labelledby='pills-all-tab-4')
-                        .container
-                            .pivot.pivot-deviation(data-year='all')
+                                .row
+                                    .col-md-8
+                                        .card.mb-3
+                                            .card-header
+                                                strong Classement général
+                                            .card-body
+                                                h6.text-center
+                                                .pivot.pivot-chart.chart-component.m-auto(
+                                                    data-chart-type="general-standings"
+                                                    data-chart-no-title="true",
+                                                    data-chart-margin-left="80"
+                                                    data-chart-margin-bottom="40"
+                                                    data-chart-margin-right="20"
+                                                    data-chart-endpoint="/api/stats"
+                                                    data-chart-rows="firstName",
+                                                    data-chart-cols="firstName",
+                                                    data-chart-horizontal="true",
+                                                    data-chart-vals="result",
+                                                    data-chart-filter-year="#{season}")
+                                                    .spinner
+                                                        .rect1
+                                                        .rect2
+                                                        .rect3
+                                                        .rect4
+                                                        .rect5
+                                    .col-md-4
+                                        .card.mb-3
+                                            .card-header
+                                                strong Variance
+                                            .card-body
+                                                h6.text-center
+                                                .pivot.pivot-chart.chart-component.m-auto(
+                                                    data-chart-type="variance"
+                                                    data-chart-no-title="true",
+                                                    data-chart-margin-left="80"
+                                                    data-chart-margin-bottom="40"
+                                                    data-chart-margin-right="20"
+                                                    data-chart-endpoint="/api/stats"
+                                                    data-chart-rows="firstName",
+                                                    data-chart-cols="firstName",
+                                                    data-chart-horizontal="true",
+                                                    data-chart-vals="result",
+                                                    data-chart-aggregator="Ecart-type"
+                                                    data-chart-filter-year="#{season}")
+                                                    .spinner
+                                                        .rect1
+                                                        .rect2
+                                                        .rect3
+                                                        .rect4
+                                                        .rect5
+                                .row
+                                    .col-md-6
+                                        .card.mb-3
+                                            .card-header
+                                                strong Participations
+                                            .card-body
+                                                h6.text-center
+                                                .pivot.pivot-chart.chart-component.m-auto(
+                                                    data-chart-type="participation"
+                                                    data-chart-no-title="true",
+                                                    data-chart-margin-left="80"
+                                                    data-chart-margin-bottom="40"
+                                                    data-chart-margin-right="20"
+                                                    data-chart-endpoint="/api/stats"
+                                                    data-chart-rows="firstName",
+                                                    data-chart-cols="",
+                                                    data-chart-vals="result",
+                                                    data-chart-horizontal="true",
+                                                    data-chart-aggregator="Nombre"
+                                                    data-chart-filter-year="#{season}")
+                                                    .spinner
+                                                        .rect1
+                                                        .rect2
+                                                        .rect3
+                                                        .rect4
+                                                        .rect5
+                        .tab-pane.fade.show(id='pills-#{season}-2', role='tabpanel', aria-labelledby='pills-#{season}-tab-2')
+                            .pivot.pivot-detail(data-year='#{season}')
+            each season, index in seasons
+                +seasonTab(season.name, index)
+            +seasonTab('all', 100)
             .tab-pane.fade.show(id='pills-stats', role='tabpanel', aria-labelledby='pills-stats-tab')
                 .container-fluid
                     .row

@@ -160,25 +160,6 @@ var sessionDetail = new Vue({
 $(function(){
     axios.get('/api/stats')
         .then(response => {
-
-            $('.pivot-sum').each(function() {
-                let year = $(this).attr('data-year');
-                $(this).pivotUI(response.data, {
-                    rows: ['firstName'], cols: [], vals: ['result'], aggregatorName: 'Somme en entiers',
-                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a',
-                    rendererName: "Carte de chaleur",
-                    rendererOptions: {
-                        heatmap: {
-                            colorScaleGenerator: function(values) {
-                                return Plotly.d3.scale.linear()
-                                    .domain([Plotly.d3.min(values), 0, Plotly.d3.max(values)])
-                                    .range(["#e67c73", "#ffd666", "#57bb8a"])
-                            }
-                        }
-                    }
-                }, false, 'fr');
-            });
-
             $('.pivot-detail').each(function() {
                 let year = $(this).attr('data-year');
                 $(this).pivotUI(response.data, {
@@ -197,21 +178,6 @@ $(function(){
                 }, false, 'fr');
             });
 
-            $('.pivot-number').each(function() {
-                let year = $(this).attr('data-year');
-                $(this).pivotUI(response.data, {
-                    rows: ['firstName'], cols: [], aggregatorName: 'Nombre',
-                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a'
-                }, false, 'fr');
-            });
-
-            $('.pivot-deviation').each(function() {
-                let year = $(this).attr('data-year');
-                $(this).pivotUI(response.data, {
-                    rows: ['firstName'], cols: [], vals: ['result'], aggregatorName: 'Ecart-type',
-                    filter: function(e) { return year == 'all' || e.year == year }, showUI: false, rowOrder: 'value_z_to_a'
-                }, false, 'fr');
-            })
             var plotRenderers = $.extend($.pivotUtilities.renderers,
                 $.pivotUtilities.plotly_renderers);
              $(".pivot-stats").pivotUI(response.data, {
@@ -223,15 +189,20 @@ $(function(){
 });
 
 $(function(){
+    var widthByType = {};
     $('.chart-component').each(function() {
         let endpoint = $(this).attr('data-chart-endpoint');
+        let chartType = $(this).attr('data-chart-type');
+        if (chartType && !widthByType[chartType]) {
+            widthByType[chartType] = $(this).innerWidth();
+        }
         axios.get(endpoint)
             .then(response => {
                 let renderOptions = {
                     plotly: {
                         autosize: true,
                         showlegend: false,
-                        width: document.getElementsByClassName('pivot')[0].clientWidth,
+                        width: widthByType[chartType] ? widthByType[chartType] : $(this).innerWidth(),
                         height: 400,
                         dragmode: false,
                         margin: {
@@ -262,7 +233,8 @@ $(function(){
                 let marginTop = $(this).attr('data-chart-margin-top');
                 let marginRight = $(this).attr('data-chart-margin-right');
                 let horizontal = $(this).attr('data-chart-horizontal') == 'true';
-                let aggragator = $(this).attr('data-chart-aggragator');
+                let aggregator = $(this).attr('data-chart-aggregator');
+                let yearFilter = $(this).attr('data-chart-filter-year');
 
                 renderOptions.plotly.title = noTitle ? '' : title;
                 if (noTitle) {
@@ -289,12 +261,17 @@ $(function(){
                 } else {
                     renderOptions.plotly.xaxis.tickangle = 90;
                 }
+                let filter = (_ => true);
+                if (yearFilter && yearFilter != 'all') {
+                    filter = (e => e.year == yearFilter);
+                }
                 $(this).pivotUI(response.data, {
-                    rows: [rows], cols: [cols], vals: [vals], aggregatorName: aggragator ? aggragator : 'Somme en entiers',
+                    rows: [rows], cols: [cols], vals: [vals], aggregatorName: aggregator ? aggregator : 'Somme en entiers',
                     rendererName: horizontal ? 'Horizontal Bar Chart' : 'Bar Chart',
                     showUI: false, rowOrder: horizontal ? 'value_a_to_z' : 'value_z_to_a',
                     renderers: plotRenderers,
                     rendererOptions: renderOptions,
+                    filter: filter,
                 }, false, 'fr');
             });
     });

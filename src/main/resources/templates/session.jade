@@ -4,13 +4,13 @@ block content
     .container-lg#session-detail
         .row
             .col
-                .session-title.mb-4
+                .session-links
+                    if previousSession != null
+                        a.btn.btn-outline-primary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
+                    if nextSession != null
+                        a.btn.btn-outline-primary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
+                .session-title.mb-4.mt-4
                     h2.lg-5 Session du #{session.displayDate()}
-                    .session-links
-                        if previousSession != null
-                            a.btn.btn-outline-primary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
-                        if nextSession != null
-                            a.btn.btn-outline-primary.btn-sm(href="/sessions/#{nextSession.sessionId}") Session suivante >
                 .row
                     .col-md-6.mb-3
                         .card

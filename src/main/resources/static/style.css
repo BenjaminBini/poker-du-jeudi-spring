@@ -1,3 +1,7 @@
+.bg-dark  {
+    background-color: #258ce8 !important;
+}
+
 .table td {
     vertical-align: middle;
 }
@@ -91,19 +95,19 @@ td.player-result-cell {
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active,
 .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active,
 .btn-primary:focus, .btn-primary.focus, .btn-outline-primary.focus, .btn-outline-primary:focus {
-    background: #F44336;
-    border-color: #F44336;
+    background: #258ce8;
+    border-color: #258ce8;
     border-radius: 0;
     box-shadow: none !important;
 }
 .btn-primary:hover, .btn-outline-primary:hover {
-    background: #FF5252;
-    border-color: #FF5252;
+    background: #258ce8;
+    border-color: #258ce8;
 }
 
 .btn-outline-primary {
-    color: #F44336;
-    border-color: #F44336;
+    color: #0075c4;
+    border-color: #0075c4;
     border-radius: 0;
 }
 
@@ -150,12 +154,21 @@ td.player-result-cell {
 .session-title {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.session-title h2 {
+    margin-bottom: 0;
+    padding: 0.5rem 1.5rem;
+    background: #258ce8;
+    color: white;
+    font-style: italic;
+    text-align: center;
 }
 
 .session-links {
-    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .session-links a {
@@ -163,12 +176,24 @@ td.player-result-cell {
     margin: 5px 0;
 }
 
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #258ce8;
+}
+
+.nav-pills .nav-link {
+    border-radius: 0;
+}
+
 .badge {
     font-size: 80%;
 }
 
+.badge.badge-primary {
+    background-color: #258ce8;
+}
+
 .card-header {
-    background: #F44336;
+    background: #ec4444;
     color: white;
     border-radius: 0 !important;
     border-bottom: 0;
@@ -181,6 +206,10 @@ td.player-result-cell {
 .card {
     border-radius: 0;
     border: 0;
+}
+
+.card .card-header.small {
+    padding: .4rem .8rem;
 }
 
 .card-body {

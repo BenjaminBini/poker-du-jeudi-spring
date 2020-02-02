@@ -10,9 +10,9 @@ block content
                     each player in players
                         .col-lg-3.col-md-4.col-sm-6.col-12
                             .card.mb-3
+                                .card-header.small
+                                    strong #{player.firstName}
                                 .card-body
-                                    h5.card-title
-                                        strong #{player.firstName}
                                     if player.playerResults.size() > 1
                                         .badge.badge-primary.mr-2 #{player.playerResults.size()} sessions
                                     else
