@@ -18,6 +18,7 @@ block content
                                     else
                                         .badge.badge-primary.mr-2 #{player.playerResults.size()} session
                                     i.badge.badge-secondary + de statistiques à venir
+                                    a.btn.btn-outline-primary(href='/players/#{player.playerId}') Détail
         if isAdmin
             .row
                 .col-md-6

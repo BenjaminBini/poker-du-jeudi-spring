@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/players")
@@ -28,6 +29,17 @@ public class PlayerController {
         model.addAttribute("players", players);
         model.addAttribute("active", "players");
         return "players";
+    }
+
+
+    @GetMapping("{playerId}")
+    public String player(Model model, @PathVariable long playerId) {
+        Optional<Player> player = this.playerService.get(playerId);
+        model.addAttribute("player", player.get());
+        model.addAttribute("active", "players");
+        model.addAttribute("numberOfFirstPlace", this.playerService.getPlayerSessionRankCount(0, playerId));
+        model.addAttribute("rankings", this.playerService.getPlayerRankings(playerId));
+        return "player";
     }
 
     @PostMapping("")

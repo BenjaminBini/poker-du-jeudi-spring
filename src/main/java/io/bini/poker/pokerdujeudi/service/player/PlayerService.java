@@ -35,4 +35,12 @@ public class PlayerService {
     public void delete(Long id) {
         playerRepository.deleteById(id);
     }
+
+    public int getPlayerSessionRankCount(int n, long playerId) {
+        return this.playerRepository.getPlayerSessionRankCount(n, playerId);
+    }
+
+    public List<PlayerRepository.PlayerRank> getPlayerRankings(long playerId) {
+        return this.playerRepository.getPlayerRankings(playerId);
+    }
 }

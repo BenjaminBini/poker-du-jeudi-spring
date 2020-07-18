@@ -1,0 +1,43 @@
+extends layout.jade
+
+block content
+    .container-lg#session-detail
+        .row
+            .col
+                .top-links
+                    a.btn.btn-outline-primary.btn-sm(href="/players") < Liste des joueurs
+                .session-title.mb-4.mt-4
+                    h2.lg-5 #{player.firstName}
+                .row
+                    .col-md-4.mb-3
+                        .card
+                            .card-header
+                                h4.text-center Résultat net
+                            .card-body #{player.getPlayerNetResult()} €
+                        .card.mt-4
+                            .card-header
+                                h4.text-center Nombre de participations
+                            .card-body #{player.totalParticipations}
+                    .col-md-8
+                        .card-header
+                            strong Classements en fin de session
+                        .card-body
+                            h6.text-center
+                                i Nombre de fois où #{player.firstName} a terminé à la Nème place
+                            .pivot.pivot-chart.chart-component.m-auto(
+                                data-chart-no-title="true",
+                                data-chart-margin-left="80"
+                                data-chart-margin-bottom="40"
+                                data-chart-margin-right="40"
+                                data-chart-endpoint="/api/stats/player/#{player.playerId}/rankings"
+                                data-chart-rows="rankingLabel",
+                                data-chart-cols="",
+                                data-chart-vals="sessionId",
+                                data-chart-horizontal="false",
+                                data-chart-aggregator="Nombre")
+                                .spinner
+                                    .rect1
+                                    .rect2
+                                    .rect3
+                                    .rect4
+                                    .rect5

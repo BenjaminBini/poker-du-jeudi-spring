@@ -1,6 +1,8 @@
 package io.bini.poker.pokerdujeudi.controllers.rest;
 
 import io.bini.poker.pokerdujeudi.dto.StatDTO;
+import io.bini.poker.pokerdujeudi.service.player.PlayerRepository;
+import io.bini.poker.pokerdujeudi.service.player.PlayerService;
 import io.bini.poker.pokerdujeudi.service.result.PlayerResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +15,12 @@ import java.util.List;
 @RequestMapping("/api/stats")
 public class PlayerResultRestController {
     private final PlayerResultService playerResultService;
+    private final PlayerService playerService;
 
     @Autowired
-    public PlayerResultRestController(PlayerResultService playerResultService) {
+    public PlayerResultRestController(PlayerResultService playerResultService, PlayerService playerService) {
         this.playerResultService = playerResultService;
+        this.playerService = playerService;
     }
 
     @RequestMapping("{sessionId}")
@@ -32,5 +36,10 @@ public class PlayerResultRestController {
     @RequestMapping("until/{sessionId}")
     public List<StatDTO> statsUntilSession(@PathVariable Integer sessionId) {
         return playerResultService.getSeasonStatsUntilDate(sessionId);
+    }
+
+    @RequestMapping("player/{playerId}/rankings")
+    public List<PlayerRepository.PlayerRank> getRanks(@PathVariable Long playerId) {
+        return playerService.getPlayerRankings(playerId);
     }
 }
