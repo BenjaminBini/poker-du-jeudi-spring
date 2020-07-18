@@ -166,12 +166,12 @@ td.player-result-cell {
     text-align: center;
 }
 
-.session-links {
+.top-links {
     display: flex;
     justify-content: space-between;
 }
 
-.session-links a {
+.top-links a {
     width: 150px;
     margin: 5px 0;
 }

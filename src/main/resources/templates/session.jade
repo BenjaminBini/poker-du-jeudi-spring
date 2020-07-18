@@ -4,7 +4,7 @@ block content
     .container-lg#session-detail
         .row
             .col
-                .session-links
+                .top-links
                     if previousSession != null
                         a.btn.btn-outline-primary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
                     if nextSession != null
@@ -92,7 +92,7 @@ block content
                     .col
                         if isAdmin
                             a.btn.btn-outline-primary.mt-3(href="/sessions/add") Ajouter une autre session
-                        .session-links.ml-0.mt-2
+                        .top-links.ml-0.mt-2
                             if previousSession != null
                                 a.btn.btn-outline-primary.btn-sm(href="/sessions/#{previousSession.sessionId}", class="#{nextSession != null ? 'mr-2' : ''}") < Session précédente
                             if nextSession != null
