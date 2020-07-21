@@ -1,4 +1,4 @@
-FROM adoptopenjdk:13-jdk-hotspot
+FROM adoptopenjdk:14-jdk-hotspot
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 ENV LANG fr_FR.UTF-8
