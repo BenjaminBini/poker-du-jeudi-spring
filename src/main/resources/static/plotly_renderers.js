@@ -70,14 +70,15 @@
                     }
                     trace.textposition = 'auto';
                     trace.hoverinfo = 'text';
-                    if (!transpose) {
-                        trace.x = [trace.name];
-                        trace.hovertext = trace.y.map(value => trace.x + ' : ' + value);
-                        trace.text= trace.y.map(String);
-                    } else {
-                        trace.text= trace.x.map(String);
-                        trace.hovertext = trace.y.map((value, index) => value + ' : ' + trace.x[index]);
-
+                    if (traceOptions.type !== "line") {
+                        if (!transpose) {
+                            trace.x = [trace.name];
+                            trace.hovertext = trace.y.map(value => trace.x + ' : ' + value);
+                            trace.text = trace.y.map(String);
+                        } else {
+                            trace.text = trace.x.map(String);
+                            trace.hovertext = trace.y.map((value, index) => value + ' : ' + trace.x[index]);
+                        }
                     }
                     return $.extend(trace, traceOptions);
                 });
@@ -225,7 +226,9 @@
             }, {
                 barmode: 'relative'
             }),
-            "Line Chart": makePlotlyChart(),
+            "Line Chart": makePlotlyChart({
+                type: 'line'
+            }),
             "Area Chart": makePlotlyChart({
                 stackgroup: 1
             }),

@@ -37,7 +37,8 @@ public class PlayerController {
         Optional<Player> player = this.playerService.get(playerId);
         model.addAttribute("player", player.get());
         model.addAttribute("active", "players");
-        model.addAttribute("numberOfFirstPlace", this.playerService.getPlayerSessionRankCount(0, playerId));
+        model.addAttribute("numberOfFirstPlace", this.playerService.getNumberOfFirstPlace(playerId));
+        model.addAttribute("numberOfLastPlace", this.playerService.getNumberOfLastPlace(playerId));
         model.addAttribute("rankings", this.playerService.getPlayerRankings(playerId));
         return "player";
     }

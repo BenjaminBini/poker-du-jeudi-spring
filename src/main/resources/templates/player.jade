@@ -12,12 +12,25 @@ block content
                     .col-md-4.mb-3
                         .card
                             .card-header
-                                h4.text-center Résultat net
-                            .card-body #{player.getPlayerNetResult()} €
+                                strong Résultat net
+                            .card-body.text-center
+                                .result(class="#{player.getPlayerNetResult() > 0 ? 'positive-result' : 'negative-result'}")
+                                    | #{player.getPlayerNetResult()} €
                         .card.mt-4
                             .card-header
-                                h4.text-center Nombre de participations
-                            .card-body #{player.totalParticipations}
+                                strong Nombre de participations
+                            .card-body.text-center
+                                .result.neutral-result #{player.totalParticipations}
+                        .card.mt-4
+                            .card-header
+                                strong Nombre de premières places
+                            .card-body.text-center
+                                .result.positive-result #{numberOfFirstPlace}
+                        .card.mt-4
+                            .card-header
+                                strong Nombre de dernières places
+                            .card-body.text-center
+                                .result.negative-result #{numberOfLastPlace}
                     .col-md-8
                         .card-header
                             strong Classements en fin de session
@@ -26,15 +39,41 @@ block content
                                 i Nombre de fois où #{player.firstName} a terminé à la Nème place
                             .pivot.pivot-chart.chart-component.m-auto(
                                 data-chart-no-title="true",
-                                data-chart-margin-left="80"
+                                data-chart-margin-left="40"
                                 data-chart-margin-bottom="40"
-                                data-chart-margin-right="40"
+                                data-chart-margin-right="20"
                                 data-chart-endpoint="/api/stats/player/#{player.playerId}/rankings"
                                 data-chart-rows="rankingLabel",
                                 data-chart-cols="",
                                 data-chart-vals="sessionId",
                                 data-chart-horizontal="false",
-                                data-chart-aggregator="Nombre")
+                                data-chart-aggregator="Nombre"
+                                data-chart-row-order='key_a_to_z')
+                                .spinner
+                                    .rect1
+                                    .rect2
+                                    .rect3
+                                    .rect4
+                                    .rect5
+                .row
+                    .col-md-12
+                        .card-header
+                            strong Evolution du résultat net
+                        .card-body
+                            .pivot.pivot-chart.chart-component.m-auto(
+                                data-chart-no-title="true",
+                                data-chart-margin-left="40"
+                                data-chart-margin-bottom="80"
+                                data-chart-margin-right="40"
+                                data-chart-endpoint="/api/stats/player/#{player.playerId}/sum"
+                                data-chart-rows="",
+                                data-chart-cols="date",
+                                data-chart-vals="cumulatedResult",
+                                data-chart-horizontal="false",
+                                data-chart-aggregator="Somme"
+                                data-chart-show-ui="false"
+                                data-chart-renderer="Line Chart"
+                                data-chart-row-order='key_a_to_z')
                                 .spinner
                                     .rect1
                                     .rect2

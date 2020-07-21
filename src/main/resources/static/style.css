@@ -258,6 +258,27 @@ td.player-result-cell {
     animation-delay: -0.8s;
 }
 
+.result {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    padding: 3px 8px;
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.positive-result {
+    background: #43a047;
+}
+
+.negative-result {
+    background: #ec4444;
+}
+
+.neutral-result {
+    background: #1f77b4;
+}
+
 @-webkit-keyframes sk-stretchdelay {
     0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
     20% { -webkit-transform: scaleY(1.0) }

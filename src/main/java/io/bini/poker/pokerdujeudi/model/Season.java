@@ -13,5 +13,9 @@ public class Season {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long seasonId;
-    private Integer name;
+    private String name;
+
+    public int getYear() {
+        return Integer.parseInt(name);
+    }
 }

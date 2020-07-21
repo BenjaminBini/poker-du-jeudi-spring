@@ -232,9 +232,12 @@ $(function(){
                 let marginBottom = $(this).attr('data-chart-margin-bottom');
                 let marginTop = $(this).attr('data-chart-margin-top');
                 let marginRight = $(this).attr('data-chart-margin-right');
-                let horizontal = $(this).attr('data-chart-horizontal') == 'true';
+                let horizontal = $(this).attr('data-chart-horizontal') === 'true';
+                let forceRowOrder = $(this).attr('data-chart-row-order');
                 let aggregator = $(this).attr('data-chart-aggregator');
                 let yearFilter = $(this).attr('data-chart-filter-year');
+                let showUi = $(this).attr('data-chart-show-ui') === 'true';
+                let renderer = $(this).attr('data-chart-renderer') ;
 
                 renderOptions.plotly.title = noTitle ? '' : title;
                 if (noTitle) {
@@ -261,14 +264,17 @@ $(function(){
                 } else {
                     renderOptions.plotly.xaxis.tickangle = 90;
                 }
+                if (!renderer) {
+                    renderer = horizontal ? 'Horizontal Bar Chart' : 'Bar Chart';
+                }
                 let filter = (_ => true);
                 if (yearFilter && yearFilter != 'all') {
                     filter = (e => e.year == yearFilter);
                 }
                 $(this).pivotUI(response.data, {
                     rows: [rows], cols: [cols], vals: [vals], aggregatorName: aggregator ? aggregator : 'Somme en entiers',
-                    rendererName: horizontal ? 'Horizontal Bar Chart' : 'Bar Chart',
-                    showUI: false, rowOrder: horizontal ? 'value_a_to_z' : 'value_z_to_a',
+                    rendererName: renderer,
+                    showUI: showUi, rowOrder: forceRowOrder ? forceRowOrder : (horizontal ? 'value_a_to_z' : 'value_z_to_a'),
                     renderers: plotRenderers,
                     rendererOptions: renderOptions,
                     filter: filter,

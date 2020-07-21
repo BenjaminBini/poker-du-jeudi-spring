@@ -36,7 +36,7 @@ public class SessionController {
     @GetMapping("")
     public String sessions(Model model) {
         List<Season> seasons = this.seasonService.list();
-        seasons.sort(Comparator.comparingInt(Season::getName).reversed());
+        seasons.sort(Comparator.comparingInt(Season::getYear).reversed());
 
         List<Session> sessions = this.sessionService.list();
         Map<Long, List<Session>> sessionsBySeason = sessions.stream()

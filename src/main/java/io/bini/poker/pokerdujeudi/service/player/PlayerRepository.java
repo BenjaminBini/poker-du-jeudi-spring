@@ -21,12 +21,37 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     Integer getPlayerSessionRankCount(int n, long playerId);
 
     @Query(value="SELECT pr.sessionId, COUNT(pr.sessionId) AS ranking FROM playerResult pr " +
-            "RIGHT JOIN playerResult pr1 ON pr1.sessionId = pr.sessionId AND pr1.result >= pr.result " +
+            "RIGHT JOIN playerResult pr1 " +
+            "ON pr1.sessionId = pr.sessionId AND (pr1.result > pr.result OR pr1.playerId = pr.playerId)" +
             "WHERE pr.playerId = ?1 " +
             "GROUP BY pr.sessionId " +
             "ORDER BY pr.sessionId DESC",
             nativeQuery = true)
     List<PlayerRank> getPlayerRankings(long playerId);
+
+    @Query(value="SELECT COUNT(ranking) as occurence FROM ( " +
+                "SELECT pr.sessionId, COUNT(pr.sessionId) AS ranking FROM playerResult pr " +
+                "RIGHT JOIN playerResult pr1 ON pr1.sessionId = pr.sessionId AND (pr1.result > pr.result OR pr.playerId = pr1.playerId) " +
+                "WHERE pr.playerId = ?1 " +
+                "GROUP BY pr.sessionId " +
+                "ORDER BY pr.sessionId DESC " +
+                ") AS ranks " +
+            "WHERE ranking = 1 " +
+            "GROUP BY ranking ",
+            nativeQuery = true)
+    Integer getNumberOfFirstPlace(long playerId);
+
+    @Query(value="SELECT COUNT(ranking) as occurence FROM ( " +
+            "SELECT pr.sessionId, COUNT(pr.sessionId) AS ranking FROM playerResult pr " +
+            "RIGHT JOIN playerResult pr1 ON pr1.sessionId = pr.sessionId AND (pr1.result < pr.result OR pr.playerId = pr1.playerId) " +
+            "WHERE pr.playerId = ?1 " +
+            "GROUP BY pr.sessionId " +
+            "ORDER BY pr.sessionId DESC " +
+            ") AS ranks " +
+            "WHERE ranking = 1 " +
+            "GROUP BY ranking ",
+            nativeQuery = true)
+    Integer getNumberOfLastPlace(long playerId);
 
     interface PlayerRank {
         long getSessionId();
