@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  app:
+    image: docker.pkg.github.com/benjaminbini/poker-du-jeudi-spring/poker-du-jeudi:latest
+    ports:
+      - "8081:8081"
+    environment:
+      - "SPRING_DATASOURCE_URL=${DATABASE_URL}"
+      - "SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}"
+      - "SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}"
+
