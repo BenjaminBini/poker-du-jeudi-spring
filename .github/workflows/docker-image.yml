@@ -16,7 +16,7 @@ jobs:
     - name: Deploy
       uses: appleboy/ssh-action@master
       env:
-        ENV_CONFIG: "blablabla"
+        ENV_CONFIG: ${{ secrets.ENV_CONFIG }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
