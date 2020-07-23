@@ -36,5 +36,5 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        ley: ${{ secrets.SSH_KEY }}
+        key: ${{ secrets.SSH_KEY }}
         script: whoami
