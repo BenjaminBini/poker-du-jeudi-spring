@@ -45,7 +45,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSH_KEY }}
-        envs: DATABASE_URL,DATABASE_USERNAME,DATABASE_PASSWORD,GITHUB_TOKEN,GITHUB_ACTOR
+        envs: DATABASE_URL,DATABASE_USERNAME,DATABASE_PASSWORD,GITHUB_TOKEN,GITHUB_ACTOR,IMAGE_ID
         script: |
           echo "$GITHUB_TOKEN" | sudo docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
           sudo docker pull $IMAGE_ID
