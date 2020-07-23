@@ -11,6 +11,7 @@ env:
 
 jobs:
   build:
+    uses: actions/checkout@v2
     runs-on: ubuntu-latest
 
     steps:
@@ -21,13 +22,13 @@ jobs:
         docker build . --file Dockerfile --tag $IMAGE_ID
 
     - name: Push the image
-      uses: actions/checkout@v2
       run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           docker push $IMAGE_ID
-        
+
+  deploy:
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
@@ -35,4 +36,3 @@ jobs:
         username: ${{ secrets.USERNAME }}
         ley: ${{ secrets.KEY }}
         script: whoami
-      run: |
