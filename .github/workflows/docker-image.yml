@@ -30,10 +30,10 @@ jobs:
           sudo mkdir -p /data/poker-du-jeudi
           sudo chown deploy:deploy /data/poker-du-jeudi
           cd /data/poker-du-jeudi
-          git clone https://github.com/${{ github.repository }}.git
+          git clone https://github.com/${{ github.repository }}.git > /dev/null
           cd poker-du-jeudi-spring
           echo DATABASE_URL=$DATABASE_URL >> .env
           echo DATABASE_USERNAME=$DATABASE_USERNAME >> .env
           echo DATABASE_PASSWORD=$DATABASE_PASSWORD >> .env
-          sudo docker-compose down
-          sudo docker-compose up -d
+          sudo docker-compose down > /dev/null
+          sudo docker-compose up -d > /dev/null
