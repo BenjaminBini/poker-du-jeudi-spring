@@ -18,9 +18,11 @@ block content
                             data-chart-margin-right="40"
                             data-chart-margin-bottom="100"
                             data-chart-endpoint="/api/stats/#{lastSession.sessionId}"
-                            data-chart-rows="firstName",
+                            data-chart-rows="",
                             data-chart-cols="firstName",
-                            data-chart-vals="result")
+                            data-chart-vals="result"
+                            data-chart-col-order="value_z_to_a"
+                            data-chart-label-suffix="&nbsp;€")
                                 .spinner
                                     .rect1
                                     .rect2
@@ -76,7 +78,8 @@ block content
                             data-chart-rows="firstName",
                             data-chart-cols="firstName",
                             data-chart-horizontal="true",
-                            data-chart-vals="result")
+                            data-chart-vals="result"
+                            data-chart-label-suffix="&nbsp;€")
                                 .spinner
                                     .rect1
                                     .rect2

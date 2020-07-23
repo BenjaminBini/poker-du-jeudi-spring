@@ -234,10 +234,13 @@ $(function(){
                 let marginRight = $(this).attr('data-chart-margin-right');
                 let horizontal = $(this).attr('data-chart-horizontal') === 'true';
                 let forceRowOrder = $(this).attr('data-chart-row-order');
+                let forceColOrder = $(this).attr('data-chart-col-order');
                 let aggregator = $(this).attr('data-chart-aggregator');
                 let yearFilter = $(this).attr('data-chart-filter-year');
                 let showUi = $(this).attr('data-chart-show-ui') === 'true';
                 let renderer = $(this).attr('data-chart-renderer') ;
+                let labelSuffix = $(this).attr('data-chart-label-suffix');
+                let hideLabels = $(this).attr('data-chart-hide-labels') === 'true';
 
                 renderOptions.plotly.title = noTitle ? '' : title;
                 if (noTitle) {
@@ -267,6 +270,13 @@ $(function(){
                 if (!renderer) {
                     renderer = horizontal ? 'Horizontal Bar Chart' : 'Bar Chart';
                 }
+                if (labelSuffix) {
+                    renderOptions.plotly.labelSuffix = labelSuffix;
+                }
+                if (hideLabels) {
+                    renderOptions.plotly.hideLabels = hideLabels;
+                }
+                renderOptions.plotly.label
                 let filter = (_ => true);
                 if (yearFilter && yearFilter != 'all') {
                     filter = (e => e.year == yearFilter);
@@ -275,6 +285,7 @@ $(function(){
                     rows: [rows], cols: [cols], vals: [vals], aggregatorName: aggregator ? aggregator : 'Somme en entiers',
                     rendererName: renderer,
                     showUI: showUi, rowOrder: forceRowOrder ? forceRowOrder : (horizontal ? 'value_a_to_z' : 'value_z_to_a'),
+                    colOrder: forceColOrder,
                     renderers: plotRenderers,
                     rendererOptions: renderOptions,
                     filter: filter,

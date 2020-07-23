@@ -70,15 +70,20 @@
                     }
                     trace.textposition = 'auto';
                     trace.hoverinfo = 'text';
-                    if (traceOptions.type !== "line") {
-                        if (!transpose) {
-                            trace.x = [trace.name];
-                            trace.hovertext = trace.y.map(value => trace.x + ' : ' + value);
-                            trace.text = trace.y.map(String);
-                        } else {
-                            trace.text = trace.x.map(String);
-                            trace.hovertext = trace.y.map((value, index) => value + ' : ' + trace.x[index]);
-                        }
+                    if (!transpose) {
+                        // trace.x = [trace.name];
+                        trace.hovertext = trace.y.map(String);
+                        trace.text = trace.y.map(String);
+                    } else {
+                        trace.text = trace.x.map(String);
+                        trace.hovertext = trace.y.map((value, index) => value + ' : ' + trace.x[index]);
+                    }
+                    if (opts.plotly.labelSuffix) {
+                        trace.text = trace.text.map(t => t + opts.plotly.labelSuffix);
+                        trace.hovertext = trace.hovertext.map(t => t + opts.plotly.labelSuffix);
+                    }
+                    if (opts.plotly.hideLabels) {
+                        trace.text = trace.text.map(_ => "");
                     }
                     return $.extend(trace, traceOptions);
                 });
@@ -227,7 +232,9 @@
                 barmode: 'relative'
             }),
             "Line Chart": makePlotlyChart({
-                type: 'line'
+                type: 'scatter',
+                line: {shape: 'spline'},
+                mode: 'lines+markers'
             }),
             "Area Chart": makePlotlyChart({
                 stackgroup: 1

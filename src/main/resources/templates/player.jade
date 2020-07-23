@@ -43,8 +43,8 @@ block content
                                 data-chart-margin-bottom="40"
                                 data-chart-margin-right="20"
                                 data-chart-endpoint="/api/stats/player/#{player.playerId}/rankings"
-                                data-chart-rows="rankingLabel",
-                                data-chart-cols="",
+                                data-chart-rows="",
+                                data-chart-cols="rankingLabel",
                                 data-chart-vals="sessionId",
                                 data-chart-horizontal="false",
                                 data-chart-aggregator="Nombre"
@@ -55,25 +55,55 @@ block content
                                     .rect3
                                     .rect4
                                     .rect5
-                .row
+
+                .row.mt-3
                     .col-md-12
                         .card-header
-                            strong Evolution du résultat net
+                            strong Evolution du résultat net total (par session)
                         .card-body
                             .pivot.pivot-chart.chart-component.m-auto(
                                 data-chart-no-title="true",
                                 data-chart-margin-left="40"
                                 data-chart-margin-bottom="80"
-                                data-chart-margin-right="40"
+                                data-chart-margin-right="20"
                                 data-chart-endpoint="/api/stats/player/#{player.playerId}/sum"
                                 data-chart-rows="",
-                                data-chart-cols="date",
+                                data-chart-cols="sessionIndex",
                                 data-chart-vals="cumulatedResult",
                                 data-chart-horizontal="false",
                                 data-chart-aggregator="Somme"
                                 data-chart-show-ui="false"
                                 data-chart-renderer="Line Chart"
-                                data-chart-row-order='key_a_to_z')
+                                data-chart-row-order='key_a_to_z'
+                                data-chart-label-suffix='&nbsp;€')
+                                .spinner
+                                    .rect1
+                                    .rect2
+                                    .rect3
+                                    .rect4
+                                    .rect5
+
+                .row.mt-3
+                    .col-md-12
+                        .card-header
+                            strong Résultat par session
+                        .card-body
+                            .pivot.pivot-chart.chart-component.m-auto(
+                                data-chart-no-title="true",
+                                data-chart-margin-left="40"
+                                data-chart-margin-bottom="80"
+                                data-chart-margin-right="20"
+                                data-chart-endpoint="/api/stats/player/#{player.playerId}/results"
+                                data-chart-rows="",
+                                data-chart-cols="sessionIndex",
+                                data-chart-vals="result",
+                                data-chart-horizontal="false",
+                                data-chart-aggregator="Somme"
+                                data-chart-show-ui="false"
+                                data-chart-renderer="Bar Chart"
+                                data-chart-row-order='key_a_to_z'
+                                data-chart-label-suffix='&nbsp;€'
+                                data-chart-hide-labels='true')
                                 .spinner
                                     .rect1
                                     .rect2

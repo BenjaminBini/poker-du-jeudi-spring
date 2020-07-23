@@ -1,6 +1,7 @@
 package io.bini.poker.pokerdujeudi.service.player;
 
 import io.bini.poker.pokerdujeudi.dto.CumulatedPlayerResultDTO;
+import io.bini.poker.pokerdujeudi.dto.PlayerResultDTO;
 import io.bini.poker.pokerdujeudi.model.Player;
 import io.bini.poker.pokerdujeudi.model.PlayerResult;
 import org.springframework.stereotype.Service;
@@ -72,13 +73,36 @@ public class PlayerService {
         results = results.stream().sorted(Comparator.comparing(r -> r.getSession().getDate())).collect(Collectors.toList());
         AtomicInteger sum = new AtomicInteger(0);
         List<CumulatedPlayerResultDTO> cumulatedResults = new ArrayList<>();
+        AtomicInteger index = new AtomicInteger(0);
         results.forEach(r -> {
             CumulatedPlayerResultDTO cumulatedResult = new CumulatedPlayerResultDTO();
             cumulatedResult.setDate(r.getSession().getDate());
             cumulatedResult.setResult(r.getResult());
             cumulatedResult.setCumulatedResult(sum.accumulateAndGet(r.getResult(), Integer::sum));
+            cumulatedResult.setSessionIndex(index.accumulateAndGet(0, (i1, i2) -> i1 + 1));
             cumulatedResults.add(cumulatedResult);
         });
         return cumulatedResults;
+    }
+
+    public List<PlayerResultDTO> getPlayerResults(long playerId, String season) {
+        List<PlayerResult> results = this.playerRepository.getOne(playerId).getPlayerResults();
+        if (season != null) {
+            results = results.stream()
+                    .filter(r -> r.getSession().getSeason().getName().equals(season))
+                    .collect(Collectors.toList());
+        }
+        results = results.stream().sorted(Comparator.comparing(r -> r.getSession().getDate())).collect(Collectors.toList());
+        List<PlayerResultDTO> playerResults = new ArrayList<>();
+        AtomicInteger index = new AtomicInteger(0);
+        results.forEach(r -> {
+            PlayerResultDTO result = new PlayerResultDTO();
+            result.setSessionIndex(index.accumulateAndGet(0, (i1, i2) -> i1 + 1));
+            result.setDate(r.getSession().getDate());
+            result.setBuyIns(r.getBuyIns());
+            result.setResult(r.getResult());
+            playerResults.add(result);
+        });
+        return playerResults;
     }
 }

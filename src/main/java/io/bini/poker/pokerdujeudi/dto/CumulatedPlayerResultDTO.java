@@ -10,4 +10,5 @@ public class CumulatedPlayerResultDTO {
     private String dateLabel;
     private int result;
     private int cumulatedResult;
+    private long sessionIndex;
 }

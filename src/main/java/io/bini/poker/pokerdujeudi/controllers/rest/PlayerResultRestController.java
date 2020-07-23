@@ -1,6 +1,7 @@
 package io.bini.poker.pokerdujeudi.controllers.rest;
 
 import io.bini.poker.pokerdujeudi.dto.CumulatedPlayerResultDTO;
+import io.bini.poker.pokerdujeudi.dto.PlayerResultDTO;
 import io.bini.poker.pokerdujeudi.dto.StatDTO;
 import io.bini.poker.pokerdujeudi.service.player.PlayerRepository;
 import io.bini.poker.pokerdujeudi.service.player.PlayerService;
@@ -49,5 +50,11 @@ public class PlayerResultRestController {
     public List<CumulatedPlayerResultDTO> getCumulatedResults(@PathVariable long playerId,
                                                               @RequestParam(required = false) String season) {
         return playerService.getCumulatedPlayerResults(playerId, season);
+    }
+
+    @RequestMapping("player/{playerId}/results")
+    public List<PlayerResultDTO> getResults(@PathVariable long playerId,
+                                            @RequestParam(required = false) String season) {
+        return playerService.getPlayerResults(playerId, season);
     }
 }

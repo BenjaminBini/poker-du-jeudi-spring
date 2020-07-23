@@ -25,9 +25,11 @@ block content
                                     data-chart-margin-top="20",
                                     data-chart-margin-bottom="100",
                                     data-chart-endpoint="/api/stats/#{session.sessionId}"
-                                    data-chart-rows="firstName",
-                                    data-chart-cols="",
-                                    data-chart-vals="result")
+                                    data-chart-rows="",
+                                    data-chart-cols="firstName",
+                                    data-chart-vals="result"
+                                    data-chart-col-order="value_z_to_a"
+                                    data-chart-label-suffix="&nbsp;€")
                                         .spinner
                                             .rect1
                                             .rect2
@@ -47,9 +49,10 @@ block content
                                         data-chart-margin-top="20",
                                         data-chart-margin-bottom="100",
                                         data-chart-endpoint="/api/stats/#{session.sessionId}"
-                                        data-chart-rows="firstName",
-                                        data-chart-cols="",
-                                        data-chart-vals="buyIns")
+                                        data-chart-rows="",
+                                        data-chart-cols="firstName",
+                                        data-chart-vals="buyIns"
+                                        data-chart-col-order="value_z_to_a")
                                             .spinner
                                                 .rect1
                                                 .rect2
@@ -70,7 +73,8 @@ block content
                                     data-chart-rows="firstName",
                                     data-chart-cols="firstName",
                                     data-chart-horizontal="true",
-                                    data-chart-vals="result")
+                                    data-chart-vals="result"
+                                    data-chart-label-suffix="&nbsp;€")
                                         .spinner
                                             .rect1
                                             .rect2
