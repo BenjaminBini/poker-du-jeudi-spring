@@ -1,9 +1,14 @@
+FROM maven:3.6.3-jdk-14 as build
+
+RUN mkdir -p /data/poker-du-jeudi
+WORKDIR /data/poker-du-jeudi
+COPY pom.xml .
+RUN mvn dependency:resolve
+COPY src src
+RUN mvn install -Dmaven.test.skip=true
+
 FROM adoptopenjdk:14-jdk-hotspot
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENV LANG fr_FR.UTF-8
-ENV LANGUAGE fr_FR:en
-ENV LC_ALL fr_FR.UTF-8
-RUN sed -i -e 's/# fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/' /etc/locale.gen && \
-    locale-gen
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+COPY --from=build /data/poker-du-jeudi/target/*.jar /data/poker-du-jeudi/app.jar
+
+ENTRYPOINT ["java","-jar","/data/poker-du-jeudi/app.jar"]
