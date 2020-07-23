@@ -16,7 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$(date +%s)
+      run: |
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+        docker build . --file Dockerfile --tag $IMAGE_ID:$VERSION
 
     - name: Push the image
       run: |
