@@ -27,7 +27,10 @@ jobs:
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           docker push $IMAGE_ID
-          
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
@@ -36,8 +39,10 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          rm -rf /data/poker-du-jeudi
-          mkdir -p /data/poker-du-jeudi
+          sudo rm -rf /data/poker-du-jeudi
+          sudo mkdir -p /data/poker-du-jeudi
+          sudo chown deploy:deploy /data/poker-du-jeudi
+          cd /data/poker-du-jeudi
           git clone https://github.com/${{ github.repository }}.git
           cd poker-jeudi-spring
           echo \"${{ secrets.ENV_CONFIG }}\" >> .env
