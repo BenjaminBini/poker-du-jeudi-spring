@@ -1,5 +1,6 @@
 package io.bini.poker.pokerdujeudi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -21,12 +22,12 @@ public class Player {
     private String lastName;
     private Long placeId;
 
-    @Transient
+    @JsonIgnore
     public Integer getPlayerNetResult() {
         return playerResults.stream().map(PlayerResult::getResult).reduce(Integer::sum).get();
     }
 
-    @Transient
+    @JsonIgnore
     public Integer getTotalParticipations() {
         return playerResults.size();
     }
