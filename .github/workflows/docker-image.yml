@@ -7,8 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  IMAGE_NAME: poker-du-jeudi
-  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME:latest
+  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/poker-du-jeudi:latest
 
 jobs:
   build:
