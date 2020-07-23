@@ -11,10 +11,10 @@ env:
 
 jobs:
   build:
-    uses: actions/checkout@v2
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
         # Change all uppercase to lowercase
@@ -29,6 +29,8 @@ jobs:
           docker push $IMAGE_ID
 
   deploy:
+    runs-on: ubuntu-latest
+    steps:
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
