@@ -28,12 +28,12 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         envs: DATABASE_URL,DATABASE_USERNAME,DATABASE_PASSWORD,GITHUB_TOKEN,GITHUB_ACTOR
         script: |
-          echo "$GITHUB_TOKEN" | docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
+          echo "$GITHUB_TOKEN" | sudo docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
           sudo rm -rf /data/poker-du-jeudi
           sudo mkdir -p /data/poker-du-jeudi
           sudo chown deploy:deploy /data/poker-du-jeudi
           cd /data/poker-du-jeudi
-          git clone https://github.com/${{ github.repository }}.git
+          sudo git clone https://github.com/${{ github.repository }}.git
           cd poker-du-jeudi-spring
           echo DATABASE_URL=$DATABASE_URL >> .env
           echo DATABASE_USERNAME=$DATABASE_USERNAME >> .env
