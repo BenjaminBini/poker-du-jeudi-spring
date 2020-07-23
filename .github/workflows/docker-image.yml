@@ -33,6 +33,8 @@ jobs:
     steps:
     - name: Deploy
       uses: appleboy/ssh-action@master
+      env:
+        SUPER_SECRET: ${{ secrets.ENV_CONFIG }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
@@ -45,6 +47,6 @@ jobs:
           cd /data/poker-du-jeudi
           git clone https://github.com/${{ github.repository }}.git
           cd poker-du-jeudi-spring
-          echo \"${{ secrets.ENV_CONFIG }}\" >> .env
+          echo \"$SUPER_SECRET\" >> .env
           sudo docker-compose down
           sudo docker-compose up -d
