@@ -48,7 +48,6 @@ jobs:
         envs: DATABASE_URL,DATABASE_USERNAME,DATABASE_PASSWORD,GITHUB_TOKEN,GITHUB_ACTOR,IMAGE_ID
         script: |
           echo "$GITHUB_TOKEN" | sudo docker login docker.pkg.github.com -u $GITHUB_ACTOR --password-stdin
-          sudo docker pull $IMAGE_ID
           sudo rm -rf /data/poker-du-jeudi
           sudo mkdir -p /data/poker-du-jeudi
           sudo chown deploy:deploy /data/poker-du-jeudi
@@ -59,4 +58,6 @@ jobs:
           echo DATABASE_USERNAME=$DATABASE_USERNAME >> .env
           echo DATABASE_PASSWORD=$DATABASE_PASSWORD >> .env
           sudo docker-compose down
+          sudo docker container prune -f
+          sudo docker image rm $IMAGE_ID
           sudo docker-compose up -d
