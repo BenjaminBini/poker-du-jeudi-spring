@@ -32,7 +32,7 @@ jobs:
           sudo rm -rf /data/poker-du-jeudi
           sudo mkdir -p /data/poker-du-jeudi
           sudo chown deploy:deploy /data/poker-du-jeudi
-          cd /data/poker-du-jeudi
+          sudo cd /data/poker-du-jeudi
           sudo git clone https://github.com/${{ github.repository }}.git
           sudo cd poker-du-jeudi-spring
           sudo echo DATABASE_URL=$DATABASE_URL >> .env
