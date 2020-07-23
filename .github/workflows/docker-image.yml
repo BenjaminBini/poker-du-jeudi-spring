@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  IMAGE_NAME: poker-du-jeudi
+  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/poker-du-jeudi:latest
 
 jobs:
   build:
@@ -15,27 +15,19 @@ jobs:
 
     steps:
     - name: Build the Docker image
-      uses: actions/checkout@v2
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$(date +%s)
+      run: |
+        # Change all uppercase to lowercase
+        IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+        docker build . --file Dockerfile --tag $IMAGE_ID
 
     - name: Push the image
       uses: actions/checkout@v2
       run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "$default-branch" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-
+          docker push $IMAGE_ID
+        
     - name: Deploy
       uses: appleboy/ssh-action@master
       with:
