@@ -16,13 +16,15 @@ jobs:
     - name: Deploy
       uses: appleboy/ssh-action@master
       env:
-        ENV_CONFIG: ${{ secrets.ENV_CONFIG }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSH_KEY }}
-        envs: ENV_CONFIG
+        envs: DATABASE_URL,DATABASE_USERNAME,DATABASE_PASSWORD
         script: |
           sudo rm -rf /data/poker-du-jeudi
           sudo mkdir -p /data/poker-du-jeudi
@@ -30,6 +32,8 @@ jobs:
           cd /data/poker-du-jeudi
           git clone https://github.com/${{ github.repository }}.git
           cd poker-du-jeudi-spring
-          echo $ENV_CONFIG >> .env
+          echo DATABASE_URL=$DATABASE_URL >> .env
+          echo DATABASE_USERNAME=$DATABASE_USERNAME >> .env
+          echo DATABASE_PASSWORD=$DATABASE_PASSWORD >> .env
           sudo docker-compose down
           sudo docker-compose up -d
