@@ -58,6 +58,7 @@ jobs:
           echo DATABASE_USERNAME=$DATABASE_USERNAME >> .env
           echo DATABASE_PASSWORD=$DATABASE_PASSWORD >> .env
           sudo docker-compose down
-          sudo docker container prune -f
-          sudo docker image rm $IMAGE_ID
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          sudo docker pull $IMAGE_ID
           sudo docker-compose up -d
