@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAME: poker-du-jeudi
-  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}:latest
+  IMAGE_ID: docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME:latest
 
 jobs:
   build:
