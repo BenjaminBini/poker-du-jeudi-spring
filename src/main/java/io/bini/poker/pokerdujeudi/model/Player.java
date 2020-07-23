@@ -21,10 +21,12 @@ public class Player {
     private String lastName;
     private Long placeId;
 
+    @Transient
     public Integer getPlayerNetResult() {
         return playerResults.stream().map(PlayerResult::getResult).reduce(Integer::sum).get();
     }
 
+    @Transient
     public Integer getTotalParticipations() {
         return playerResults.size();
     }
