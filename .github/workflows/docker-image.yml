@@ -52,7 +52,7 @@ jobs:
           sudo mkdir -p /data/poker-du-jeudi
           sudo chown deploy:deploy /data/poker-du-jeudi
           cd /data/poker-du-jeudi
-          sudo git clone https://github.com/${{ github.repository }}.git
+          git clone https://github.com/${{ github.repository }}.git
           cd poker-du-jeudi-spring
           echo DATABASE_URL=$DATABASE_URL >> .env
           echo DATABASE_USERNAME=$DATABASE_USERNAME >> .env
